@@ -56,6 +56,7 @@ CREATE TABLE notes (
     note_text VARCHAR(1000) NOT NULL,
     from_id INT NOT NULL,
     to_id INT NOT NULL,
+    sent_time TIMESTAMP NOT NULL,
     FOREIGN KEY (from_id) REFERENCES userTable(id) ON DELETE CASCADE,
     FOREIGN KEY (to_id) REFERENCES userTable(id) ON DELETE CASCADE
 );
