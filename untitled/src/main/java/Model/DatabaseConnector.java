@@ -11,16 +11,16 @@ import java.sql.*;
 public class DatabaseConnector {
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
         String dbName = "quiz_db";
         String sqlUsername = "root";
         String sqlPassword = "rootroot";
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName +"?charachterEncoding=UTF8&user=" + sqlUsername + "&password=" + sqlPassword);
-    }
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, sqlUsername, sqlPassword);}
 
     public static void resetTables() throws IOException, SQLException, ClassNotFoundException {
+        String filePath = "C:\\Users\\tbark\\Desktop\\project\\resetTables.sql";
         StringBuilder sql = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new FileReader("resetTables.sql"));
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String str;
         while ((str = reader.readLine()) != null) {
             sql.append(str);

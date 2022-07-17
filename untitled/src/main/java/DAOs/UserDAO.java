@@ -24,6 +24,10 @@ public class UserDAO {
         stm.setString(4, user.getLastName());
         stm.setBoolean(5, user.isAdmin());
         stm.executeUpdate();
+        ResultSet res = stm.getGeneratedKeys();
+        res.next();
+        long userId = res.getLong(1);
+        user.setId(userId);
     }
 
     public User getUser (long userId) throws SQLException {

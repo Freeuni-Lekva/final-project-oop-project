@@ -17,6 +17,14 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    public User (String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isAdmin = isAdmin;
+    }
+
     public long getId() {
         return id;
     }
