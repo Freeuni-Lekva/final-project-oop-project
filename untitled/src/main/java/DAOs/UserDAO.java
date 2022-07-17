@@ -17,7 +17,8 @@ public class UserDAO {
 
     public void addUser (User user) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
-                                                        "first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)");
+                                                        "first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
+                                                        PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPasswordHash());
         stm.setString(3, user.getFirstName());
