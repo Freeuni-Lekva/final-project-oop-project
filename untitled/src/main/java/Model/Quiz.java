@@ -10,6 +10,7 @@ public class Quiz {
     private boolean immediateFeedback;
     private boolean practiceMode;
 
+
     public Quiz (long id, String title, long creatorUserId, boolean randomQuestions, boolean onePage, boolean immediateFeedback, boolean practiceMode) {
         this.id = id;
         this.title = title;
@@ -22,6 +23,10 @@ public class Quiz {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
