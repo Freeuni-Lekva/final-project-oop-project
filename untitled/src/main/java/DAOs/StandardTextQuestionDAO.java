@@ -2,6 +2,7 @@ package DAOs;
 
 import Model.Answer;
 import Model.Question;
+import Model.Quiz;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,6 +30,7 @@ public abstract class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO 
             res.next();
             long answerId = res.getLong(1);
             ans.setId(answerId);
+            ans.setIsCorrect(true);
         }
     }
 
@@ -39,7 +41,7 @@ public abstract class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO 
         ResultSet res = stm.executeQuery();
         List<Answer> lst = new ArrayList<>();
         while (res.next()) {
-            lst.add(new Answer(res.getLong("id"), res.getString("answer_text"), res.getLong("question_id")));
+            lst.add(new Answer(res.getLong("id"), res.getString("answer_text"), res.getLong("question_id"), true));
         }
         return lst;
     }
@@ -63,5 +65,17 @@ public abstract class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO 
         ResultSet res = stm.executeQuery();
         res.next();
         return new Question (res.getLong("id"), res.getString("question_text"), res.getLong("quiz_id"), "", 1);
+    }
+
+    @Override
+    public List<Question> getAllQuestions(long quizId) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM standardTextQuestions WHERE quiz_id = ?");
+        stm.setLong(1, quizId);
+        List<Question> questionList = new ArrayList<>();
+        ResultSet res = stm.executeQuery();
+        while (res.next()) {
+            questionList.add(getQuestion(res.getLong("id")));
+        }
+        return questionList;
     }
 }

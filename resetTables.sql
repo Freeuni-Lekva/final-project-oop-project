@@ -104,6 +104,7 @@ CREATE TABLE multipleChoiceQuestions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     question_text VARCHAR(1000) NOT NULL,
     quiz_id INT NOT NULL,
+    num_of_answers INT NOT NULL,
     FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 

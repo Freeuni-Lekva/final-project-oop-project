@@ -3,10 +3,10 @@ package DAOs;
 import Model.Question;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface QuestionDAO {
     void addQuestion (Question question, long quizId) throws SQLException;
-    void addImageQuestion (String url, Question question, long quizId);
     Question getQuestion (long questionId) throws SQLException;
-    Question getUrl (long questionId);
+    List<Question> getAllQuestions (long quizId) throws SQLException;
 }

@@ -114,20 +114,20 @@ public class UserDAO {
         stm.executeUpdate();
     }
 
-    public List<Quiz> getCreatedQuizzes (long userId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
-        stm.setLong(1, userId);
-        ResultSet res = stm.executeQuery();
-        List<Quiz> createdQuizzes = new ArrayList<>();
-        while (res.next()) {
-            Quiz currQuiz = new Quiz(res.getLong("id"), res.getString("title"),
-                                     res.getLong("creator_id"),
-                                     res.getBoolean("are_random_questions"),
-                                     res.getBoolean("is_one_page"),
-                                     res.getBoolean("is_immediate_feedback"),
-                                     res.getBoolean("is_practice_mode"));
-            createdQuizzes.add(currQuiz);
-        }
-        return createdQuizzes;
-    }
+//    public List<Quiz> getCreatedQuizzes (long userId) throws SQLException {
+//        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
+//        stm.setLong(1, userId);
+//        ResultSet res = stm.executeQuery();
+//        List<Quiz> createdQuizzes = new ArrayList<>();
+//        while (res.next()) {
+//            Quiz currQuiz = new Quiz(res.getLong("id"), res.getString("title"),
+//                                     res.getLong("creator_id"),
+//                                     res.getBoolean("are_random_questions"),
+//                                     res.getBoolean("is_one_page"),
+//                                     res.getBoolean("is_immediate_feedback"),
+//                                     res.getBoolean("is_practice_mode"));
+//            createdQuizzes.add(currQuiz);
+//        }
+//        return createdQuizzes;
+//    }
 }
