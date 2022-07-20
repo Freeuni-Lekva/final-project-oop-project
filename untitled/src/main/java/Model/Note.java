@@ -18,8 +18,19 @@ public class Note {
         this.sentTime = sentTime;
     }
 
+    public Note(String noteText, long fromUserId, long toUserId, Timestamp sentTime) {
+        this.noteText = noteText;
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
+        this.sentTime = sentTime;
+    }
+
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNoteText() {
@@ -48,5 +59,9 @@ public class Note {
 
     public Timestamp getSentTime() {
         return  sentTime;
+    }
+
+    public void setSentTime(Timestamp sentTime) {
+        this.sentTime = sentTime;
     }
 }

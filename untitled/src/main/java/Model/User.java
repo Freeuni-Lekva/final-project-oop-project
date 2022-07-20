@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.List;
+
 public class User {
     private long id;
     private String username;
@@ -7,6 +9,7 @@ public class User {
     private String firstName;
     private String lastName;
     private boolean isAdmin;
+    private List<User> friends;
 
     public User (long id, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
         this.id = id;
@@ -69,6 +72,14 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
     }
 
     @Override

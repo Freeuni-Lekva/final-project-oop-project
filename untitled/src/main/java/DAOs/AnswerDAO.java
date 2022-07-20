@@ -9,4 +9,5 @@ import java.util.List;
 public interface AnswerDAO {
     void addAnswer (ArrayList<Answer> answers, long questionId) throws SQLException;
     List<Answer> getAnswer (long questionId) throws SQLException;
+    void removeAnswer (long answerId) throws SQLException;
 }

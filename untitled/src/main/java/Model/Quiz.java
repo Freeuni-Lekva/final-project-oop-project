@@ -14,7 +14,8 @@ public class Quiz {
     private List<Question> questions;
 
 
-    public Quiz(long id, String title, long creatorUserId, boolean randomQuestions, boolean onePage, boolean immediateFeedback, boolean practiceMode, List<Question> questions) {
+    public Quiz(long id, String title, long creatorUserId, boolean randomQuestions, boolean onePage,
+                boolean immediateFeedback, boolean practiceMode) {
         this.id = id;
         this.title = title;
         this.creatorUserId = creatorUserId;
@@ -22,7 +23,6 @@ public class Quiz {
         this.onePage = onePage;
         this.immediateFeedback = immediateFeedback;
         this.practiceMode = practiceMode;
-        this.questions = questions;
     }
 
     public List<Question> getQuestions() {

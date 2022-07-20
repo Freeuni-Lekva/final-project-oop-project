@@ -48,8 +48,10 @@ public class TestQuestionDAOs extends TestCase {
     }
 
     public void setStandardUp() throws SQLException {
-        standardTextQuestion1 = new Question("What was the name of the first President of Georgia?", 1, "", 1);
-        standardTextQuestion2 = new Question("What is the name of the Capital of Georgia?", 1, "", 1);
+        standardTextQuestion1 = new Question("What was the name of the first President of Georgia?",
+                                             1, "", 1);
+        standardTextQuestion2 = new Question("What is the name of the Capital of Georgia?",
+                                             1, "", 1);
         standardDao.addQuestion(standardTextQuestion1, 1);
         standardDao.addQuestion(standardTextQuestion2, 1);
         standardTextAnswer1 = new Answer("Zviad Gamsakhurdia", standardTextQuestion1.getId(), true);
@@ -63,8 +65,10 @@ public class TestQuestionDAOs extends TestCase {
     }
 
     public void setFillTheBlankUp() throws SQLException {
-        fillTheBlankQuestion1 = new Question("The famous statue of a woman in Tbilisi is called ______", 1, "", 1);
-        fillTheBlankQuestion2 = new Question("20% of Georgia's territory is occupied by _____", 1, "", 1);
+        fillTheBlankQuestion1 = new Question("The famous statue of a woman in Tbilisi is called ______",
+                                             1, "", 1);
+        fillTheBlankQuestion2 = new Question("20% of Georgia's territory is occupied by _____",
+                                             1, "", 1);
         fillTheBlankDao.addQuestion(fillTheBlankQuestion1, 1);
         fillTheBlankDao.addQuestion(fillTheBlankQuestion2, 1);
         fillTheBlankAnswer1 = new Answer("Qartlis Deda", fillTheBlankQuestion1.getId(), true);
@@ -139,6 +143,10 @@ public class TestQuestionDAOs extends TestCase {
         assertEquals(standardTextAnswer2.getQuestionId(), ans2.get(0).getQuestionId());
         assertEquals(standardTextAnswer2.getText(), ans2.get(0).getText());
         assertEquals(standardTextAnswer2.getId(), ans2.get(0).getId());
+        List<Question> allQuestions = standardDao.getAllQuestions(standardTextQuestion1.getQuizId());
+        assertEquals(2, allQuestions.size());
+        assertEquals(standardTextQuestion1.getText(), allQuestions.get(0).getText());
+        assertEquals(standardTextQuestion2.getText(), allQuestions.get(1).getText());
     }
 
     public void testFillTheBlank() throws SQLException {
@@ -163,6 +171,10 @@ public class TestQuestionDAOs extends TestCase {
         assertEquals(fillTheBlankAnswer2.getQuestionId(), ans2.get(0).getQuestionId());
         assertEquals(fillTheBlankAnswer2.getText(), ans2.get(0).getText());
         assertEquals(fillTheBlankAnswer2.getId(), ans2.get(0).getId());
+        List<Question> allQuestions = fillTheBlankDao.getAllQuestions(fillTheBlankQuestion1.getQuizId());
+        assertEquals(2, allQuestions.size());
+        assertEquals(fillTheBlankQuestion1.getText(), allQuestions.get(0).getText());
+        assertEquals(fillTheBlankQuestion2.getText(), allQuestions.get(1).getText());
     }
 
     public void testMultipleChoice() throws SQLException {
@@ -211,6 +223,10 @@ public class TestQuestionDAOs extends TestCase {
         assertEquals(multipleChoiceAnswer23.getText(), ans2.get(2).getText());
         assertEquals(multipleChoiceAnswer23.getId(), ans2.get(2).getId());
         assertEquals(multipleChoiceAnswer23.isCorrect(), ans2.get(2).isCorrect());
+        List<Question> allQuestions = multipleChoiceDao.getAllQuestions(multipleChoiceQuestion1.getQuizId());
+        assertEquals(2, allQuestions.size());
+        assertEquals(multipleChoiceQuestion1.getText(), allQuestions.get(0).getText());
+        assertEquals(multipleChoiceQuestion2.getText(), allQuestions.get(1).getText());
     }
 
     public void testPictureResponse() throws SQLException {
@@ -235,5 +251,9 @@ public class TestQuestionDAOs extends TestCase {
         assertEquals(pictureResponseAnswer2.getQuestionId(), ans2.get(0).getQuestionId());
         assertEquals(pictureResponseAnswer2.getText(), ans2.get(0).getText());
         assertEquals(pictureResponseAnswer2.getId(), ans2.get(0).getId());
+        List<Question> allQuestions = pictureResponseDao.getAllQuestions(pictureResponseQuestion1.getQuizId());
+        assertEquals(2, allQuestions.size());
+        assertEquals(pictureResponseQuestion1.getText(), allQuestions.get(0).getText());
+        assertEquals(pictureResponseQuestion2.getText(), allQuestions.get(1).getText());
     }
 }

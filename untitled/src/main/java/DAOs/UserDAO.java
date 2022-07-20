@@ -1,6 +1,5 @@
 package DAOs;
 
-import Model.Quiz;
 import Model.TakenQuiz;
 import Model.User;
 import java.sql.*;
@@ -17,7 +16,7 @@ public class UserDAO {
 
     public void addUser (User user) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
-                                                        "first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
+                                                        " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
                                                         PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPasswordHash());
@@ -48,7 +47,8 @@ public class UserDAO {
     }
 
     public void addFriend (long firstUserId, long secondUserId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO friends (first_user_id, second_user_id) VALUES (?, ?)");
+        PreparedStatement stm = myConn.prepareStatement("INSERT INTO friends (first_user_id, second_user_id)" +
+                                                        " VALUES (?, ?)");
         stm.setLong(1, firstUserId);
         stm.setLong(2, secondUserId);
         stm.executeUpdate();
@@ -59,7 +59,8 @@ public class UserDAO {
     }
 
     public List<User> getFriends (long userId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT second_user_id FROM friends WHERE first_user_id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT second_user_id FROM friends" +
+                                                        " WHERE first_user_id = ?");
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         List<User> friendList = new ArrayList<>();
@@ -72,7 +73,8 @@ public class UserDAO {
     }
 
     public void removeFriend (long firstFriendId, long secondFriendId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM friends WHERE first_user_id = ? AND second_user_id = ?");
+        PreparedStatement stm = myConn.prepareStatement("DELETE FROM friends WHERE first_user_id = ? " +
+                                                        "AND second_user_id = ?");
         stm.setLong(1, firstFriendId);
         stm.setLong(2, secondFriendId);
         stm.executeUpdate();
@@ -113,21 +115,4 @@ public class UserDAO {
         stm.setLong(1, userId);
         stm.executeUpdate();
     }
-
-//    public List<Quiz> getCreatedQuizzes (long userId) throws SQLException {
-//        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
-//        stm.setLong(1, userId);
-//        ResultSet res = stm.executeQuery();
-//        List<Quiz> createdQuizzes = new ArrayList<>();
-//        while (res.next()) {
-//            Quiz currQuiz = new Quiz(res.getLong("id"), res.getString("title"),
-//                                     res.getLong("creator_id"),
-//                                     res.getBoolean("are_random_questions"),
-//                                     res.getBoolean("is_one_page"),
-//                                     res.getBoolean("is_immediate_feedback"),
-//                                     res.getBoolean("is_practice_mode"));
-//            createdQuizzes.add(currQuiz);
-//        }
-//        return createdQuizzes;
-//    }
 }

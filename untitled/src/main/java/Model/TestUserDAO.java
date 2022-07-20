@@ -19,10 +19,14 @@ public class TestUserDAO extends TestCase {
 
     public void setUp () throws SQLException, IOException, ClassNotFoundException, NoSuchAlgorithmException {
         DatabaseConnector.resetTables();
-        user1 = new User("kakhv20", new Hash("pass").generateHash(), "Kakha", "Akhvlediani", false);
-        user2 = new User("malkh19", new Hash("pass").generateHash(), "Misho", "Alkhanashvili", false);
-        user3 = new User("tbark19", new Hash("pass").generateHash(), "Temuka", "Barkaia", false);
-        user4 = new User("vmama20", new Hash("pass").generateHash(), "Vajha", "Mamatsashvili", false);
+        user1 = new User("kakhv20", new Hash("pass").generateHash(), "Kakha",
+                         "Akhvlediani", false);
+        user2 = new User("malkh19", new Hash("pass").generateHash(), "Misho",
+                         "Alkhanashvili", false);
+        user3 = new User("tbark19", new Hash("pass").generateHash(), "Temuka",
+                         "Barkaia", false);
+        user4 = new User("vmama20", new Hash("pass").generateHash(), "Vajha",
+                         "Mamatsashvili", false);
         dao = new UserDAO(DatabaseConnector.getConnection());
         dao.addUser(user1);
         dao.addUser(user2);

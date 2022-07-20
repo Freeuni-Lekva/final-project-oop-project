@@ -228,5 +228,5 @@ for testing purposes
 INSERT INTO usertable (username, password_hash, first_name, last_name, is_admin) VALUES ('Khabju', 'pass', 'temo', 'barkaia', '1');
 
 INSERT INTO quizzes (title, creator_id, are_random_questions, is_one_page, is_immediate_feedback, is_practice_mode) VALUES ('TestQuiz', '1', '0', '0', '0', '0');
-
+/*
  */
