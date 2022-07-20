@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
+public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
 
     private final Connection myConn;
 
@@ -24,7 +24,7 @@ public abstract class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO 
             PreparedStatement stm = myConn.prepareStatement("INSERT INTO fillTheBlankAnswers (answer_text, question_id) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, ans.getText());
             stm.setLong(2, questionId);
-            stm.executeUpdate();
+            stm.execute();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
             long answerId = res.getLong(1);
@@ -35,7 +35,7 @@ public abstract class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO 
 
     @Override
     public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM fillTheBlankAnswers WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM fillTheBlankAnswers WHERE question_id = ?");
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         List<Answer> lst = new ArrayList<>();
@@ -50,7 +50,7 @@ public abstract class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO 
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO fillTheBlankQuestions (question_text, quiz_id) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, question.getText());
         stm.setLong(2, quizId);
-        stm.executeUpdate();
+        stm.execute();
         ResultSet res = stm.getGeneratedKeys();
         res.next();
         long questionId = res.getLong(1);

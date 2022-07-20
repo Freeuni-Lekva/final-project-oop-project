@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
+public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
 
     private final Connection myConn;
 
@@ -25,7 +25,7 @@ public abstract class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDA
             stm.setString(1, ans.getText());
             stm.setLong(2, questionId);
             stm.setBoolean(3, ans.isCorrect());
-            stm.executeUpdate();
+            stm.execute();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
             long answerId = res.getLong(1);
@@ -35,7 +35,7 @@ public abstract class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDA
 
     @Override
     public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM multipleChoiceAnswers WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM multipleChoiceAnswers WHERE question_id = ?");
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         List<Answer> lst = new ArrayList<>();
@@ -51,7 +51,7 @@ public abstract class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDA
         stm.setString(1, question.getText());
         stm.setLong(2, quizId);
         stm.setInt(3, question.getNumOfAnswers());
-        stm.executeUpdate();
+        stm.execute();
         ResultSet res = stm.getGeneratedKeys();
         res.next();
         long questionId = res.getLong(1);
@@ -64,7 +64,7 @@ public abstract class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDA
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         res.next();
-        return new Question (res.getLong("id"), res.getString("question_text"), res.getLong("quiz_id"), "", res.getInt("num_of_questions"));
+        return new Question (res.getLong("id"), res.getString("question_text"), res.getLong("quiz_id"), "", res.getInt("num_of_answers"));
 
     }
 

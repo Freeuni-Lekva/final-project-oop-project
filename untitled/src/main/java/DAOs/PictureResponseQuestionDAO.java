@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
+public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
 
     private final Connection myConn;
 
@@ -24,7 +24,7 @@ public abstract class PictureResponseQuestionDAO implements QuestionDAO, AnswerD
             PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers (answer_text, question_id) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, ans.getText());
             stm.setLong(2, questionId);
-            stm.executeUpdate();
+            stm.execute();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
             long answerId = res.getLong(1);
@@ -35,7 +35,7 @@ public abstract class PictureResponseQuestionDAO implements QuestionDAO, AnswerD
 
     @Override
     public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         List<Answer> lst = new ArrayList<>();
@@ -51,7 +51,7 @@ public abstract class PictureResponseQuestionDAO implements QuestionDAO, AnswerD
         stm.setString(1, question.getText());
         stm.setString(2, question.getImageUrl());
         stm.setLong(3, quizId);
-        stm.executeUpdate();
+        stm.execute();
         ResultSet res = stm.getGeneratedKeys();
         res.next();
         long questionId = res.getLong(1);

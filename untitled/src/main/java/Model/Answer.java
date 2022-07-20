@@ -7,14 +7,14 @@ public class Answer {
     private long questionId;
     private boolean isCorrect;
 
-    public Answer(String text, long questionId, boolean isCorrect) {
+    public Answer(long id, String text, long questionId, boolean isCorrect) {
+        this.id = id;
         this.text = text;
         this.questionId = questionId;
         this.isCorrect = isCorrect;
     }
 
-    public Answer(long id, String text, long questionId, boolean isCorrect) {
-        this.id = id;
+    public Answer(String text, long questionId, boolean isCorrect) {
         this.text = text;
         this.questionId = questionId;
         this.isCorrect = isCorrect;
