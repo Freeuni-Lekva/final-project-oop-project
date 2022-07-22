@@ -25,6 +25,15 @@ public class Quiz {
         this.practiceMode = practiceMode;
     }
 
+    public Quiz(String title, long creatorUserId, boolean randomQuestions, boolean onePage, boolean immediateFeedback, boolean practiceMode) {
+        this.title = title;
+        this.creatorUserId = creatorUserId;
+        this.randomQuestions = randomQuestions;
+        this.onePage = onePage;
+        this.immediateFeedback = immediateFeedback;
+        this.practiceMode = practiceMode;
+    }
+
     public List<Question> getQuestions() {
         return questions;
     }

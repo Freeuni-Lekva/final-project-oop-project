@@ -20,8 +20,8 @@ public class QuizDAO {
 
     public void addQuiz (Quiz quiz) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO quizzes (title, creator_id, " +
-                                                        "are_random_quetions, is_one_page, is_immediate_feedback, " +
-                                                        "is_pracrice_mode) VALUES (?, ?, ?, ?, ?, ?)",
+                                                        "are_random_questions, is_one_page, is_immediate_feedback, " +
+                                                        "is_practice_mode) VALUES (?, ?, ?, ?, ?, ?)",
                                                         PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, quiz.getTitle());
         stm.setLong(2, quiz.getCreatorUserId());
@@ -77,7 +77,7 @@ public class QuizDAO {
     }
 
     public List<Quiz> getAllQuizzes() throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id DESC");
+        PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id ASC");
         ResultSet res = stm.executeQuery();
         List<Quiz> allQuizzes = new ArrayList<>();
         while (res.next()) {
