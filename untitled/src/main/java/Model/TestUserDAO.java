@@ -1,11 +1,14 @@
 package Model;
 
+import DAOs.QuizDAO;
 import DAOs.UserDAO;
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class TestUserDAO extends TestCase {
@@ -15,6 +18,7 @@ public class TestUserDAO extends TestCase {
     private User user2;
     private User user3;
     private User user4;
+    private QuizDAO quizDao;
 
 
     public void setUp () throws SQLException, IOException, ClassNotFoundException, NoSuchAlgorithmException {
@@ -27,7 +31,9 @@ public class TestUserDAO extends TestCase {
                          "Barkaia", false);
         user4 = new User("vmama20", new Hash("pass").generateHash(), "Vajha",
                          "Mamatsashvili", false);
-        dao = new UserDAO(DatabaseConnector.getConnection());
+        Connection myConn = DatabaseConnector.getConnection();
+        dao = new UserDAO(myConn);
+        quizDao = new QuizDAO(myConn);
         dao.addUser(user1);
         dao.addUser(user2);
         dao.addUser(user3);
@@ -56,6 +62,42 @@ public class TestUserDAO extends TestCase {
     }
 
     public void testQuizHistory() throws SQLException {
+        Quiz quiz1 = new Quiz("Quiz#1", 1, false, false,
+                              false, false);
+        quizDao.addQuiz(quiz1);
+        Quiz quiz2 = new Quiz("Quiz#2", 1, false, false,
+                              false, false);
+        quizDao.addQuiz(quiz2);
+        Quiz quiz3 = new Quiz("Quiz#3", 1, false, false,
+                              false, false);
+        quizDao.addQuiz(quiz3);
+        Quiz quiz4 = new Quiz("Quiz#4", 2, false, false,
+                              false, false);
+        quizDao.addQuiz(quiz4);
+        TakenQuiz tquiz1 = new TakenQuiz(user1.getId(), quiz1.getId(), 100,
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+        TakenQuiz tquiz2 = new TakenQuiz(user1.getId(), quiz2.getId(), 100,
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+        TakenQuiz tquiz3 = new TakenQuiz(user1.getId(), quiz3.getId(), 100,
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+        TakenQuiz tquiz4 = new TakenQuiz(user1.getId(), quiz4.getId(), 100,
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+        dao.takeTheQuiz(tquiz1);
+        dao.takeTheQuiz(tquiz2);
+        dao.takeTheQuiz(tquiz3);
+        dao.takeTheQuiz(tquiz4);
+        List<TakenQuiz> takenQuizzes = dao.getQuizHistory(user1.getId());
+        assertEquals(4, takenQuizzes.size());
+        assertEquals(tquiz1.getQuizId(), takenQuizzes.get(0).getQuizId());
+        assertEquals(tquiz2.getQuizId(), takenQuizzes.get(1).getQuizId());
+        assertEquals(tquiz3.getQuizId(), takenQuizzes.get(2).getQuizId());
+        assertEquals(tquiz4.getQuizId(), takenQuizzes.get(3).getQuizId());
+    }
 
+    public void testAdmin() throws SQLException {
+        dao.makeAdmin(user1.getId());
+        assertTrue(dao.getUser(user1.getId()).isAdmin());
+        dao.deleteAdmin(user1.getId());
+        assertFalse(dao.getUser(user1.getId()).isAdmin());
     }
 }

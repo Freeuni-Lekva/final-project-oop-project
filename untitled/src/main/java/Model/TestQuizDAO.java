@@ -23,13 +23,17 @@ public class TestQuizDAO extends TestCase {
     public void setUp() throws SQLException, ClassNotFoundException {
         Connection myConn = DatabaseConnector.getConnection();
         quizDao = new QuizDAO(myConn);
-        quiz1 = new Quiz("Quiz#1", 1, false, false, false, false);
+        quiz1 = new Quiz("Quiz#1", 1, false, false,
+                         false, false);
         quizDao.addQuiz(quiz1);
-        quiz2 = new Quiz("Quiz#2", 1, false, false, false, false);
+        quiz2 = new Quiz("Quiz#2", 1, false, false,
+                         false, false);
         quizDao.addQuiz(quiz2);
-        quiz3 = new Quiz("Quiz#3", 1, false, false, false, false);
+        quiz3 = new Quiz("Quiz#3", 1, false, false,
+                         false, false);
         quizDao.addQuiz(quiz3);
-        quiz4 = new Quiz("Quiz#4", 2, false, false, false, false);
+        quiz4 = new Quiz("Quiz#4", 2, false, false,
+                         false, false);
         quizDao.addQuiz(quiz4);
         StandardTextQuestionDAO standardDao = new StandardTextQuestionDAO(myConn);
         standardTextQuestion1 = new Question("What was the name of the first President of Georgia?",

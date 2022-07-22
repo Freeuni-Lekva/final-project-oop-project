@@ -115,4 +115,10 @@ public class UserDAO {
         stm.setLong(1, userId);
         stm.executeUpdate();
     }
+
+    public void deleteAdmin (long userId) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("UPDATE userTable SET is_admin = FALSE WHERE id = ?");
+        stm.setLong(1, userId);
+        stm.executeUpdate();
+    }
 }

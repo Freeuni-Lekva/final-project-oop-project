@@ -2,7 +2,6 @@ package DAOs;
 
 import Model.Answer;
 import Model.Question;
-import Model.Quiz;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

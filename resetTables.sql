@@ -221,12 +221,3 @@ CREATE TABLE userHistory (
     FOREIGN KEY (user_id) REFERENCES userTable (id) ON DELETE CASCADE,
     FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
-
-/*
-for testing purposes
-*/
-INSERT INTO usertable (username, password_hash, first_name, last_name, is_admin) VALUES ('Khabju1', 'pass', 'temuka', 'barkaia', '1');
-INSERT INTO usertable (username, password_hash, first_name, last_name, is_admin) VALUES ('Khabju2', 'pass', 'temur', 'barkaia', '1');
-INSERT INTO usertable (username, password_hash, first_name, last_name, is_admin) VALUES ('Khabju3', 'pass', 'temo', 'barkaia', '1');
-/*
- */
