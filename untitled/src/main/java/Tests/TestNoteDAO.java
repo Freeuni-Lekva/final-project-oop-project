@@ -1,6 +1,8 @@
-package Model;
+package Tests;
 
 import DAOs.NoteDAO;
+import Model.DatabaseConnector;
+import Model.Note;
 import junit.framework.TestCase;
 
 import java.sql.SQLException;

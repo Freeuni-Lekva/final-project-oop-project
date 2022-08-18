@@ -1,6 +1,8 @@
-package Model;
+package Tests;
 
 import DAOs.FriendRequestDAO;
+import Model.DatabaseConnector;
+import Model.FriendRequest;
 import junit.framework.TestCase;
 
 import java.sql.Connection;

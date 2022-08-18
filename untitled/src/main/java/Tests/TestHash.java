@@ -1,5 +1,6 @@
-package Model;
+package Tests;
 
+import Model.Hash;
 import junit.framework.TestCase;
 
 import java.security.NoSuchAlgorithmException;

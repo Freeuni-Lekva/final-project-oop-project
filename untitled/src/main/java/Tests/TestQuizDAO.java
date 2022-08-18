@@ -1,7 +1,11 @@
-package Model;
+package Tests;
 
 import DAOs.QuizDAO;
 import DAOs.StandardTextQuestionDAO;
+import Model.Answer;
+import Model.DatabaseConnector;
+import Model.Question;
+import Model.Quiz;
 import junit.framework.TestCase;
 
 import java.sql.Connection;
