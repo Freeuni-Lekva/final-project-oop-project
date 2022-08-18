@@ -1,4 +1,4 @@
-package Model;
+package Quiz.Model;
 
 public class Question {
     private long id;

@@ -1,4 +1,4 @@
-package Model;
+package Quiz.Model;
 
 import java.sql.Timestamp;
 
