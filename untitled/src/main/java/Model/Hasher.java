@@ -3,15 +3,9 @@ package Model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Hash {
+public class Hasher {
 
-    private final String password;
-
-    public Hash (String password) {
-        this.password = password;
-    }
-
-    public String hexToString(byte[] bytes) {
+    public static String hexToString(byte[] bytes) {
         StringBuilder buff = new StringBuilder();
         for (int aByte : bytes) {
             int val = aByte;
@@ -22,9 +16,15 @@ public class Hash {
         return buff.toString();
     }
 
-    public String generateHash() throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA");
-        md.update(password.getBytes());
-        return hexToString(md.digest());
+    public static String generateHash(String str) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            md.update(str.getBytes());
+            return hexToString(md.digest());
+        } catch (NoSuchAlgorithmException exception) {
+            exception.printStackTrace();
+        }
+
+        return null;
     }
 }
