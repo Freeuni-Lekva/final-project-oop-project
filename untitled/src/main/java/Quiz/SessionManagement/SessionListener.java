@@ -1,8 +1,7 @@
-package SessionManagment;
+package Quiz.SessionManagement;
 
 import Quiz.DAOs.*;
 
-import javax.servlet.Filter;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.sql.Connection;

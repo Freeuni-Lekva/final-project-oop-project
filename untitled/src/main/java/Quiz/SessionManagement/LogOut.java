@@ -1,4 +1,4 @@
-package SessionManagment;
+package Quiz.SessionManagement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
