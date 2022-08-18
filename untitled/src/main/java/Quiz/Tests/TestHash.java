@@ -1,6 +1,6 @@
 package Quiz.Tests;
 
-import Quiz.Model.Hasher;
+import Quiz.Hasher;
 import junit.framework.TestCase;
 
 

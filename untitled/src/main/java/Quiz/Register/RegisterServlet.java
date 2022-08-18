@@ -2,7 +2,7 @@ package Quiz.Register;
 
 import Quiz.DAOs.UserDAO;
 import Quiz.Errors.AppError;
-import Quiz.Model.Hasher;
+import Quiz.Hasher;
 import Quiz.Model.User;
 import Quiz.Validator.RegisterValidator;
 

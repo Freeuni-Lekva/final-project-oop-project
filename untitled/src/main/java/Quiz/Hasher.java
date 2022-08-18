@@ -1,4 +1,4 @@
-package Quiz.Model;
+package Quiz;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
