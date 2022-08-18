@@ -3,11 +3,10 @@ package Tests;
 import Model.Hasher;
 import junit.framework.TestCase;
 
-import java.security.NoSuchAlgorithmException;
 
 public class TestHash extends TestCase {
 
-    public void testHash() throws NoSuchAlgorithmException {
+    public void testHash() {
         assertEquals("dc724af18fbdd4e59189f5fe768a5f8311527050", Hasher.generateHash("testing"));
         // testing for most common passwords
         assertEquals("7c222fb2927d828af22f592134e8932480637c0d", Hasher.generateHash("12345678"));

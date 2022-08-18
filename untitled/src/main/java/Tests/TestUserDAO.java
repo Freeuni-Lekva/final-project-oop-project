@@ -6,7 +6,6 @@ import Model.*;
 import junit.framework.TestCase;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -22,7 +21,7 @@ public class TestUserDAO extends TestCase {
     private QuizDAO quizDao;
 
 
-    public void setUp () throws SQLException, IOException, ClassNotFoundException, NoSuchAlgorithmException {
+    public void setUp () throws SQLException, IOException, ClassNotFoundException {
         DatabaseConnector.resetTables();
         user1 = new User("kakhv20", Hasher.generateHash("pass"), "Kakha",
                          "Akhvlediani", false);
