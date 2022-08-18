@@ -1,8 +1,8 @@
-package Tests;
+package Quiz.Tests;
 
-import DAOs.QuizDAO;
-import DAOs.UserDAO;
-import Model.*;
+import Quiz.DAOs.QuizDAO;
+import Quiz.DAOs.UserDAO;
+import Quiz.Model.*;
 import junit.framework.TestCase;
 
 import java.io.IOException;

@@ -1,8 +1,8 @@
-package Tests;
+package Quiz.Tests;
 
-import DAOs.NoteDAO;
-import Model.DatabaseConnector;
-import Model.Note;
+import Quiz.DAOs.NoteDAO;
+import Quiz.Model.DatabaseConnector;
+import Quiz.Model.Note;
 import junit.framework.TestCase;
 
 import java.sql.SQLException;

@@ -1,8 +1,8 @@
-package Tests;
+package Quiz.Tests;
 
-import DAOs.FriendRequestDAO;
-import Model.DatabaseConnector;
-import Model.FriendRequest;
+import Quiz.DAOs.FriendRequestDAO;
+import Quiz.Model.DatabaseConnector;
+import Quiz.Model.FriendRequest;
 import junit.framework.TestCase;
 
 import java.sql.Connection;

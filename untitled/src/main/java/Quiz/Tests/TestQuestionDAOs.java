@@ -1,9 +1,9 @@
-package Tests;
+package Quiz.Tests;
 
-import DAOs.*;
-import Model.Answer;
-import Model.DatabaseConnector;
-import Model.Question;
+import Quiz.DAOs.*;
+import Quiz.Model.Answer;
+import Quiz.Model.DatabaseConnector;
+import Quiz.Model.Question;
 import junit.framework.TestCase;
 
 import java.io.IOException;
