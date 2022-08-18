@@ -10,6 +10,7 @@ import java.sql.*;
 
 public class DatabaseConnector {
 
+    // TODO NEEDS REWORK
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         String dbName = "quiz_db";
         String sqlUsername = "root";
