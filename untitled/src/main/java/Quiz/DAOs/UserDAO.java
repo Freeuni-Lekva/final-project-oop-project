@@ -1,7 +1,7 @@
-package DAOs;
+package Quiz.DAOs;
 
-import Model.TakenQuiz;
-import Model.User;
+import Quiz.Model.TakenQuiz;
+import Quiz.Model.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package DAOs;
+package Quiz.DAOs;
 
-import Model.Question;
+import Quiz.Model.Question;
 
 import java.sql.SQLException;
 import java.util.List;

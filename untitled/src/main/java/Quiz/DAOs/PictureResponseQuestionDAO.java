@@ -1,7 +1,7 @@
-package DAOs;
+package Quiz.DAOs;
 
-import Model.Answer;
-import Model.Question;
+import Quiz.Model.Answer;
+import Quiz.Model.Question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,18 +10,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
+public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
 
     private final Connection myConn;
 
-    public FillTheBlankQuestionDAO(Connection myConn) {
-        this.myConn = myConn;
+    public PictureResponseQuestionDAO (Connection conn) {
+        myConn = conn;
     }
 
     @Override
     public void addAnswer(ArrayList<Answer> answers, long questionId) throws SQLException {
         for (Answer ans : answers) {
-            PreparedStatement stm = myConn.prepareStatement("INSERT INTO fillTheBlankAnswers " +
+            PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
                                                             "(answer_text, question_id) VALUES (?, ?)",
                                                             PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, ans.getText());
@@ -37,7 +37,7 @@ public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
 
     @Override
     public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM fillTheBlankAnswers WHERE question_id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         List<Answer> lst = new ArrayList<>();
@@ -50,18 +50,19 @@ public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
 
     @Override
     public void removeAnswer(long answerId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM fillTheBlankAnswers WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("DELETE FROM pictureResponseAnswers WHERE id = ?");
         stm.setLong(1, answerId);
         stm.executeUpdate();
     }
 
     @Override
     public void addQuestion(Question question, long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO fillTheBlankQuestions " +
-                                                        "(question_text, quiz_id) VALUES (?, ?)",
+        PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseQuestions " +
+                                                        "(question_text, url, quiz_id) VALUES (?, ?, ?)",
                                                         PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, question.getText());
-        stm.setLong(2, quizId);
+        stm.setString(2, question.getImageUrl());
+        stm.setLong(3, quizId);
         stm.execute();
         ResultSet res = stm.getGeneratedKeys();
         res.next();
@@ -71,17 +72,17 @@ public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
 
     @Override
     public Question getQuestion(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM fillTheBlankQuestions WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE id = ?");
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         res.next();
         return new Question (res.getLong("id"), res.getString("question_text"),
-                             res.getLong("quiz_id"), "", 1);
+                             res.getLong("quiz_id"), res.getString("url"), 1);
     }
 
     @Override
     public List<Question> getAllQuestions(long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM fillTheBlankQuestions WHERE quiz_id = ?");
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE quiz_id = ?");
         stm.setLong(1, quizId);
         List<Question> questionList = new ArrayList<>();
         ResultSet res = stm.executeQuery();
@@ -93,7 +94,7 @@ public class FillTheBlankQuestionDAO implements QuestionDAO, AnswerDAO {
 
     @Override
     public void removeQuestion(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM fillTheBlankQuestions WHERE id = ?");
+        PreparedStatement stm = myConn.prepareStatement("DELETE FROM pictureResponseQuestions WHERE id = ?");
         stm.setLong(1, questionId);
         stm.executeUpdate();
     }

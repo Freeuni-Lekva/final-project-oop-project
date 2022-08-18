@@ -1,6 +1,6 @@
-package DAOs;
+package Quiz.DAOs;
 
-import Model.FriendRequest;
+import Quiz.Model.FriendRequest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

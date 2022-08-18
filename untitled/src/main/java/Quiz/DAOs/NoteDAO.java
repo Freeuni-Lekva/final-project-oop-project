@@ -1,6 +1,6 @@
-package DAOs;
+package Quiz.DAOs;
 
-import Model.Note;
+import Quiz.Model.Note;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
