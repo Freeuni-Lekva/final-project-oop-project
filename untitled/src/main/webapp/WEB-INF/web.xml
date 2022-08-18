@@ -4,4 +4,29 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+
+  <!-- REGISTER SERVLET -->
+  <servlet>
+    <servlet-name>register-servlet</servlet-name>
+    <servlet-class>Quiz.Register.RegisterServlet</servlet-class>
+  </servlet>
+
+  <!-- MAPPING -->
+  <servlet-mapping>
+    <servlet-name>register-servlet</servlet-name>
+    <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- Main Page -->
+  <welcome-file-list>
+    <welcome-file>MainPage</welcome-file>
+  </welcome-file-list>
+
+  <!-- Error Pages -->
+  <error-page>
+    <error-code>404</error-code>
+    <location></location>  <!-- TODO Needs location -->
+  </error-page>
 </web-app>
