@@ -1,10 +1,10 @@
-package Register;
+package Quiz.Register;
 
-import DAOs.UserDAO;
-import Errors.AppError;
-import Model.Hasher;
-import Model.User;
-import Validator.RegisterValidator;
+import Quiz.DAOs.UserDAO;
+import Quiz.Errors.AppError;
+import Quiz.Model.Hasher;
+import Quiz.Model.User;
+import Quiz.Validator.RegisterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
