@@ -1,6 +1,6 @@
-package Validator;
+package Quiz.Validator;
 
-import Errors.AppError;
+import Quiz.Errors.AppError;
 
 import java.sql.SQLException;
 import java.util.List;
