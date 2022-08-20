@@ -9,7 +9,7 @@
   <!-- REGISTER SERVLET -->
   <servlet>
     <servlet-name>register-servlet</servlet-name>
-    <servlet-class>Quiz.Register.RegisterServlet</servlet-class>
+    <servlet-class>Quiz.Sevices.Register.RegisterServlet</servlet-class>
   </servlet>
 
   <!-- MAPPING -->
