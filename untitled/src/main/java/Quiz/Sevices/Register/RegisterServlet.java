@@ -50,7 +50,7 @@ public class RegisterServlet extends HttpServlet {
         RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, dataBaseConn);
 
         try {
-            if (regVal.validate()) {
+            if (!regVal.validate()) {
                 errors = regVal.getErrors();
             }
         } catch (SQLException exception) {

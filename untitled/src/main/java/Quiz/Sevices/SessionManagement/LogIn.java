@@ -41,7 +41,7 @@ public class LogIn extends HttpServlet {
         LogInValidator logInValidator = new LogInValidator(username, password, dataBaseConn);
 
         try {
-            if (logInValidator.validate()) {
+            if (!logInValidator.validate()) {
                 List<AppError> errors = logInValidator.getErrors();
 
                 Gson gson = new Gson();
