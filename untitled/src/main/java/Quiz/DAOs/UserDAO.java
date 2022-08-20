@@ -40,6 +40,17 @@ public class UserDAO {
                         res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
+    public User getUser (String userName) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
+        stm.setString(1,userName);
+        ResultSet res = stm.executeQuery();
+
+        res.next();
+        return new User(res.getLong("id"), res.getString("username"),
+                res.getString("password_hash"), res.getString("first_name"),
+                res.getString("last_name"), res.getBoolean("is_admin"));
+    }
+
     public void removeUser (long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM userTable WHERE id = ?");
         stm.setLong(1, userId);
