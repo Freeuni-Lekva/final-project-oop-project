@@ -1,4 +1,4 @@
-package Quiz.Register;
+package Quiz.Sevices.Register;
 
 import Quiz.DAOs.UserDAO;
 import Quiz.Errors.AppError;
