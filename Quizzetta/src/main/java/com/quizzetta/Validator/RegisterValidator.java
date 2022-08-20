@@ -47,7 +47,7 @@ public class RegisterValidator implements Validator{
 
             if (value == null) {
                 String keyText = String.valueOf(key.charAt(0)).toUpperCase() + key.substring(1);
-                errors.add(new EmptyInputError(key, keyText + " should be inputed"));
+                errors.add(new EmptyInputError(key, keyText + " has to be be inputed"));
             }
         }
 
@@ -64,8 +64,14 @@ public class RegisterValidator implements Validator{
         return errors.size() == 0;
     } // TODO SHOULD WE ADD SECOND INPUT OF A PASSWORD "CONFIRM PASSWORD"
 
-    private boolean isUniqueUserName() {
-        return false;
+    private boolean isUniqueUserName() throws SQLException {
+        UniquenessValidator uniquenessValidator = new UniquenessValidator(-1, username, connection);
+
+        if (!uniquenessValidator.validate()) {
+            errors.addAll(uniquenessValidator.getErrors());
+        }
+
+        return errors.size() == 0;
     }
 
     @Override
