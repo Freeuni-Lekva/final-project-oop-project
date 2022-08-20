@@ -1,10 +1,14 @@
 package com.quizzetta.Validator;
 
 import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.EmptyInputError;
+import com.sun.tools.javac.util.Pair;
 
+import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RegisterValidator implements Validator{
@@ -29,10 +33,46 @@ public class RegisterValidator implements Validator{
         this.errors = new ArrayList<>();
     }
 
+    private boolean isEntirelyFilled() {
+        List<Pair> pairs = Arrays.asList(
+                new Pair("username", username),
+                new Pair("firstName", firstName),
+                new Pair("lastName", lastName),
+                new Pair("password", password)
+        );
+
+        for (Pair pair: pairs) {
+            String key = (String) pair.fst;
+            Object value = pair.snd;
+
+            if (value == null) {
+                String keyText = String.valueOf(key.charAt(0)).toUpperCase() + key.substring(1);
+                errors.add(new EmptyInputError(key, keyText + " should be inputed"));
+            }
+        }
+
+        return errors.size() == 0;
+    }
+
+    private boolean isCorrectFormatForPassword() throws SQLException {
+        PasswordValidator passwordValidator = new PasswordValidator(this.password);
+
+        if (!passwordValidator.validate()) {
+            errors.addAll(passwordValidator.getErrors());
+        }
+
+        return errors.size() == 0;
+    } // TODO SHOULD WE ADD SECOND INPUT OF A PASSWORD "CONFIRM PASSWORD"
+
+    private boolean isUniqueUserName() {
+        return false;
+    }
+
     @Override
     public boolean validate() throws SQLException {
-        return false; // TODO NEEDS TO BE IMPLEMENTED
-    }
+        return isEntirelyFilled() && isUniqueUserName() && isCorrectFormatForPassword();
+    } // TODO SHOULD WE CHECK ALL THE CASES OR RETURN ON THE FIRST FALSE
+
 
     @Override
     public List<AppError> getErrors() {
