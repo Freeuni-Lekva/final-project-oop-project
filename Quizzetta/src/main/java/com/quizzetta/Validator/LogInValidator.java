@@ -29,9 +29,9 @@ public class LogInValidator implements Validator {
         errors = new ArrayList<>();
 
         if (userName == null) { // TODO SHOULD WE PRINT ALL MISSING INFO, OR JUST THE FIRST ONE
-            errors.add(new EmptyInputError("username", "Username Field should not be empty"));
+            errors.add(new EmptyInputError("username", "Username Field has to be not be empty"));
         } else if (password == null) {
-            errors.add(new EmptyInputError("username", "Username Field should not be empty"));
+            errors.add(new EmptyInputError("username", "Username Field has to be not be empty"));
         }
 
         UserNameValidator userNameValidator = new UserNameValidator(userName); // TODO we need to consider limitations
