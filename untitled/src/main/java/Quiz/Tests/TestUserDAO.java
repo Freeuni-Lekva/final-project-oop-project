@@ -3,6 +3,7 @@ package Quiz.Tests;
 import Quiz.DAOs.QuizDAO;
 import Quiz.DAOs.UserDAO;
 import Quiz.Model.*;
+import Quiz.Hasher;
 import junit.framework.TestCase;
 
 import java.io.IOException;
