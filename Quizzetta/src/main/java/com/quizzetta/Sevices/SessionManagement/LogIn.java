@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@WebServlet("/login")
+@WebServlet("/Login")
 public class LogIn extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,16 +53,19 @@ public class LogIn extends HttpServlet {
             exception.printStackTrace();
         }
 
-        UserDAO userDAO = (UserDAO) req.getSession().getAttribute("UserDAO");
+        // Changed getSession to getServletContext()
+        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
 
-        try {
-            User user = userDAO.getUser(username);
 
-            req.getSession().setAttribute("currenUserId", user.getId()); // TODO
-            req.getSession().setAttribute("currentUserName", user.getUsername()); // TODO
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try { // User exists in database
+//            User user = userDAO.getUser(username);
+//            req.getSession().setAttribute("currentUserId", user.getId()); // TODO
+//            req.getSession().setAttribute("currentUserName", user.getUsername()); // TODO
+//        } catch (SQLException e) { // User doesn't exist in database
+//            e.printStackTrace();
+//        }
+
+
     }
 
     private boolean isLoggedIn(HttpServletRequest request) {

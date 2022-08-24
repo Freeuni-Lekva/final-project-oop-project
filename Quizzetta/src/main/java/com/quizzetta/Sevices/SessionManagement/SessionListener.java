@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.sql.Connection;
 
+
 public class SessionListener implements HttpSessionListener {
 
     // TODO ADMIN NEEDS TO BE ADDED OR CHANGED
@@ -35,6 +36,11 @@ public class SessionListener implements HttpSessionListener {
         se.getSession().setAttribute("FillTheBlankQuestionDAO", fillTheBlankQuestionDAO);
         se.getSession().setAttribute("NoteDAO", noteDAO);
         se.getSession().setAttribute("FriendRequestDAO", friendRequestDAO);
+    }
+
+    @Override
+    public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+
     }
 
 }
