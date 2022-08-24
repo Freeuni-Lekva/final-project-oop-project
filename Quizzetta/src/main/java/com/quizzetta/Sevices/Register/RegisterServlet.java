@@ -7,6 +7,7 @@ import com.quizzetta.Model.User;
 import com.quizzetta.Validator.RegisterValidator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+@WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
     private static final String REGISTER_PAGE_PATH = ""; // TODO
 
@@ -35,9 +37,13 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
 
-        String firstName = req.getParameter("username");
-        String lastName = req.getParameter("username");
+        System.out.println("hehehe");
+        System.out.println(String.format("%s %s %s %s", username, password, firstName, lastName));
+
+//        String email = req.getParameter("email");
 
         boolean isAdmin = false;
 
@@ -71,16 +77,15 @@ public class RegisterServlet extends HttpServlet {
 
         try {
             userDAO.addUser(user);
-
             req.getSession().setAttribute("currentUserId", user.getId()); // TODO KEYWORDS NEED TO BE REVIEWED
-            req .getSession().setAttribute("currentUserName", user.getUsername()); // TODO KEYWORDS NEED TO BE REVIEWED
+            req.getSession().setAttribute("currentUserName", user.getUsername()); // TODO KEYWORDS NEED TO BE REVIEWED
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-
+    // Can change to only check if userId is not null.
     private boolean isLoggedIn(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("currentUserId"); // TODO  MAKE SURE THE KEYWORD WORKS
         String userName = (String) request.getSession().getAttribute("currentUserName"); // TODO SAME AS ABOVE
