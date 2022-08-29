@@ -9,7 +9,7 @@ import java.io.IOException;
 
 
 @WebServlet("/logout")
-public class LogOut extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         removeCurrentSession(req);
@@ -23,7 +23,7 @@ public class LogOut extends HttpServlet {
     }
 
     private void removeCurrentSession(HttpServletRequest request) {
-        request.getSession().setAttribute("currentUserId", null); // TODO
-        request.getSession().setAttribute("currentUserName", null); // TODO
+        request.getSession().setAttribute("userId", null); // TODO
+        request.getSession().setAttribute("username", null); // TODO
     }
 }
