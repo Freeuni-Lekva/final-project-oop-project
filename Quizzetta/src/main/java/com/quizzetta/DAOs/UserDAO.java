@@ -14,20 +14,30 @@ public class UserDAO {
         myConn = conn;
     }
 
-    public void addUser (User user) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
-                                                        " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
-                                                        PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, user.getUsername());
-        stm.setString(2, user.getPasswordHash());
-        stm.setString(3, user.getFirstName());
-        stm.setString(4, user.getLastName());
-        stm.setBoolean(5, user.isAdmin());
-        stm.executeUpdate();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long userId = res.getLong(1);
-        user.setId(userId);
+    public void addUser (User user){
+        PreparedStatement stm = null;
+        try {
+            stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
+                                                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
+                                                            PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, user.getUsername());
+            stm.setString(2, user.getPasswordHash());
+            stm.setString(3, user.getFirstName());
+            stm.setString(4, user.getLastName());
+            stm.setBoolean(5, user.isAdmin());
+            stm.executeUpdate();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long userId = res.getLong(1);
+            user.setId(userId);
+            System.out.println("NOT SQL EXCEPTION");
+
+        } catch (SQLException e) {
+            System.out.println("SQL EXCEPTION");
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public User getUser (long userId) throws SQLException {
@@ -40,15 +50,26 @@ public class UserDAO {
                         res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
-    public User getUser (String userName) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
-        stm.setString(1,userName);
-        ResultSet res = stm.executeQuery();
+    public User getUser (String userName){
+        try {
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
+            stm.setString(1, userName);
+            ResultSet res = stm.executeQuery();
 
-        res.next();
-        return new User(res.getLong("id"), res.getString("username"),
-                res.getString("password_hash"), res.getString("first_name"),
-                res.getString("last_name"), res.getBoolean("is_admin"));
+            res.next();
+            return new User(res.getLong("id"), res.getString("username"),
+                    res.getString("password_hash"), res.getString("first_name"),
+                    res.getString("last_name"), res.getBoolean("is_admin"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        catch (Exception ex) {
+            System.out.println("Unknown Error while getting the User");
+            ex.printStackTrace();
+        }
+            return null;
     }
 
     public void removeUser (long userId) throws SQLException {
