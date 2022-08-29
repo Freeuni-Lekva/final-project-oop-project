@@ -1,7 +1,9 @@
 package com.quizzetta.Validator;
 
+import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
+import com.quizzetta.Model.User;
 
 import javax.management.relation.RelationSupport;
 import java.sql.Connection;
@@ -12,35 +14,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UniquenessValidator implements Validator {
-    private final long id;
+    //    private final long id;
     private final String username;
-    private final Connection connection;
+    //    private final Connection connection;
+    UserDAO userDAO;
+
 
     private List<AppError> errors;
 
-    public UniquenessValidator(long id, String username, Connection connection) {
-        if (username == null) {
-            throw new IllegalArgumentException("Username has to be be filled");
-        }
+    public UniquenessValidator(String username, UserDAO userDAO) {
+//        if (username == null) {
+//            throw new IllegalArgumentException("Username has to be be filled");
+//        }
 
-        this.id = id;
+//        this.id = id;
         this.username = username;
-        this.connection = connection;
-
+//        this.connection = connection;
+        this.userDAO = userDAO;
         this.errors = new ArrayList<>();
     }
 
     @Override
     public boolean validate() throws SQLException {
-        if (username != null) {
-            PreparedStatement stm = connection.prepareStatement("SELECT * FROM userTable where nickname = ?");
-            stm.setString(1, username);
-
-            ResultSet resultSet = stm.executeQuery();
-            if (resultSet.next()) {
-                errors.add(new EmptyInputError("username","username is already taken"));
-            }
+        System.out.println("SHEMOSVLA VALIDATESHI");
+        if (userDAO.getUser(username) != null) {
+            errors.add(new EmptyInputError("username", "The username is already taken"));
         }
+//
+//        if (username != null) {
+//            System.out.println("SHEMOSVLA IF STATEMENTSHI");
+//            PreparedStatement stm = connection.prepareStatement("SELECT * FROM userTable where nickname = ?");
+//            stm.setString(1, username);
+//
+//            System.out.println("ABA AQAMDE TU MOVALT ABA MAGREBI VART");
+//            ResultSet resultSet = stm.executeQuery();
+//            if (resultSet.next()) {
+//                errors.add(new EmptyInputError("username","username is already taken"));
+//            }
+//        }
 
         return errors.size() == 0;
     }
