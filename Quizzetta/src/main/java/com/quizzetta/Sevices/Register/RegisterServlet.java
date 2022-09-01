@@ -37,16 +37,12 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
+        String email = req.getParameter("email");
 
-        System.out.println("hehehe");
+
         System.out.println(String.format("%s %s %s %s", username, password, firstName, lastName));
-
-//        String email = req.getParameter("email");
-
         boolean isAdmin = false;
         System.out.println("CONNECTIONAMDE AR MISULI: ");
-
-        Connection dataBaseConn = (Connection) req.getServletContext().getAttribute("dataBaseConn"); // TODO needs review
 
         UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
         System.out.println("ADD USERAMDE AR MISULI: ");
@@ -56,34 +52,27 @@ public class RegisterServlet extends HttpServlet {
         System.out.println("ADD USER MOXDA: ");
 
 
-        User test1 = userDAO.getUser("vmama20");
-        System.out.println(test1.getUsername());
 
         System.out.println("ERRORAMDE AR MISULI: ");
-
-        // TODO REGISTER NEEDS TO BE VALIDATED
 
         // ERRORS
         List<AppError> errors = new ArrayList<>();
         RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, userDAO);
         System.out.println("SQLAMDE AR MISULI: ");
 
+        // I'm saving all the errors for testing, but only passing the first one to the JSP.
         if (!regVal.validate()) {
             System.out.println("Not Validated: ");
             errors = regVal.getErrors();
             for (AppError e : errors) {
-                System.out.println(e);
+                System.out.println(e.getErrorMessage());
             }
+//            errors.get(0).getErrorMessage()
+            req.setAttribute("ErrorMessage", errors.get(0).getErrorMessage());
+            req.getRequestDispatcher("Register.jsp").forward(req, resp);
+//            System.out.println("AQ VART???");
+            return;
         }
-
-
-        // check for caught errors
-//        if (errors.size() != 0) {
-//            System.out.println("GSONSHI SHEMOSVLAAA");
-//            Gson gson = new Gson();
-//            resp.getWriter().println(gson.toJson(errors));
-//            return;
-//        }
 
         for (AppError s : errors) {
             System.out.println(s.getErrorMessage());
@@ -92,7 +81,6 @@ public class RegisterServlet extends HttpServlet {
         // Add User to the Database.
         String passwordHash = Hasher.generateHash(password); // TODO LOGIC BEHIND THIS NEEDS TO BE REVIEWED
         User user = new User(username, passwordHash, firstName, lastName, isAdmin);
-
         userDAO.addUser(user);
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());

@@ -33,22 +33,32 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("userDAO");
-
+        System.out.println("AQ VART");
+        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
+        System.out.println(userDAO);
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
         LoginValidator loginValidator = new LoginValidator(username, password, userDAO);
+        System.out.println("AXLA AQQQ :P");
 
         if (!loginValidator.validate()) {
+            System.out.println("SHEMOSVLA");
             List<AppError> errors = loginValidator.getErrors();
-            Gson gson = new Gson();
-            resp.getWriter().print(gson.toJson(errors));
-            // TODO SEND ERROR TO THE JSP
+            System.out.println("Validator passed");
+//            Gson gson = new Gson();
+//            resp.getWriter().print(gson.toJson(errors));
+            req.setAttribute("ErrorMessage", errors.get(0).getErrorMessage());
+            req.getRequestDispatcher("Login.jsp").forward(req, resp);
             return;
         }
 
-        User user = userDAO.getUser(username);
+        User user = null;
+        try {
+            user = userDAO.getUser(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
