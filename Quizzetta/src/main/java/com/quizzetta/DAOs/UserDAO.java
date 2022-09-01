@@ -2,6 +2,7 @@ package com.quizzetta.DAOs;
 
 import com.quizzetta.Model.TakenQuiz;
 import com.quizzetta.Model.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +15,12 @@ public class UserDAO {
         myConn = conn;
     }
 
-    public void addUser (User user){
+    public void addUser(User user) {
         PreparedStatement stm = null;
         try {
             stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
-                                                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
-                                                            PreparedStatement.RETURN_GENERATED_KEYS);
+                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, user.getUsername());
             stm.setString(2, user.getPasswordHash());
             stm.setString(3, user.getFirstName());
@@ -40,47 +41,39 @@ public class UserDAO {
         }
     }
 
-    public User getUser (long userId) throws SQLException {
+    public User getUser(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE id = ?");
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         res.next();
         return new User(res.getLong("id"), res.getString("username"),
-                        res.getString("password_hash"), res.getString("first_name"),
-                        res.getString("last_name"), res.getBoolean("is_admin"));
+                res.getString("password_hash"), res.getString("first_name"),
+                res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
-    public User getUser (String userName){
-        try {
-            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
-            stm.setString(1, userName);
-            ResultSet res = stm.executeQuery();
+    public User getUser(String userName) throws SQLException {
 
-            res.next();
-            return new User(res.getLong("id"), res.getString("username"),
-                    res.getString("password_hash"), res.getString("first_name"),
-                    res.getString("last_name"), res.getBoolean("is_admin"));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        catch (Exception ex) {
-            System.out.println("Unknown Error while getting the User");
-            ex.printStackTrace();
-        }
-            return null;
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
+        stm.setString(1, userName);
+        ResultSet res = stm.executeQuery();
+
+        res.next();
+        return new User(res.getLong("id"), res.getString("username"),
+                res.getString("password_hash"), res.getString("first_name"),
+                res.getString("last_name"), res.getBoolean("is_admin"));
+
+
     }
 
-    public void removeUser (long userId) throws SQLException {
+    public void removeUser(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM userTable WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();
     }
 
-    public void addFriend (long firstUserId, long secondUserId) throws SQLException {
+    public void addFriend(long firstUserId, long secondUserId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO friends (first_user_id, second_user_id)" +
-                                                        " VALUES (?, ?)");
+                " VALUES (?, ?)");
         stm.setLong(1, firstUserId);
         stm.setLong(2, secondUserId);
         stm.executeUpdate();
@@ -90,9 +83,9 @@ public class UserDAO {
         stm.executeUpdate();
     }
 
-    public List<User> getFriends (long userId) throws SQLException {
+    public List<User> getFriends(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("SELECT second_user_id FROM friends" +
-                                                        " WHERE first_user_id = ?");
+                " WHERE first_user_id = ?");
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         List<User> friendList = new ArrayList<>();
@@ -104,9 +97,9 @@ public class UserDAO {
         return friendList;
     }
 
-    public void removeFriend (long firstFriendId, long secondFriendId) throws SQLException {
+    public void removeFriend(long firstFriendId, long secondFriendId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM friends WHERE first_user_id = ? " +
-                                                        "AND second_user_id = ?");
+                "AND second_user_id = ?");
         stm.setLong(1, firstFriendId);
         stm.setLong(2, secondFriendId);
         stm.executeUpdate();
@@ -116,9 +109,9 @@ public class UserDAO {
         stm.executeUpdate();
     }
 
-    public void takeTheQuiz (TakenQuiz quiz) throws SQLException {
+    public void takeTheQuiz(TakenQuiz quiz) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO userHistory (user_id, quiz_id, user_score," +
-                                                            "quiz_start_time, quiz_end_time) VALUES (?, ?, ?, ?, ?)");
+                "quiz_start_time, quiz_end_time) VALUES (?, ?, ?, ?, ?)");
         stm.setLong(1, quiz.getUserId());
         stm.setLong(2, quiz.getQuizId());
         stm.setDouble(3, quiz.getUserScore());
@@ -127,28 +120,28 @@ public class UserDAO {
         stm.executeUpdate();
     }
 
-    public List<TakenQuiz> getQuizHistory (long userId) throws SQLException {
+    public List<TakenQuiz> getQuizHistory(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userHistory WHERE user_id = ?");
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         List<TakenQuiz> takenQuizzes = new ArrayList<>();
         while (res.next()) {
             TakenQuiz currQuiz = new TakenQuiz(res.getLong("user_id"), res.getLong("quiz_id"),
-                                               res.getDouble("user_score"),
-                                               res.getTimestamp("quiz_start_time"),
-                                               res.getTimestamp("quiz_end_time"));
+                    res.getDouble("user_score"),
+                    res.getTimestamp("quiz_start_time"),
+                    res.getTimestamp("quiz_end_time"));
             takenQuizzes.add(currQuiz);
         }
         return takenQuizzes;
     }
 
-    public void makeAdmin (long userId) throws SQLException {
+    public void makeAdmin(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("UPDATE userTable SET is_admin = TRUE WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();
     }
 
-    public void deleteAdmin (long userId) throws SQLException {
+    public void deleteAdmin(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("UPDATE userTable SET is_admin = FALSE WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();

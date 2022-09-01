@@ -18,22 +18,26 @@ public class QuizDAO {
         this.myConn = myConn;
     }
 
-    public void addQuiz (Quiz quiz) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO quizzes (title, creator_id, " +
-                                                        "are_random_questions, is_one_page, is_immediate_feedback, " +
-                                                        "is_practice_mode) VALUES (?, ?, ?, ?, ?, ?)",
-                                                        PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, quiz.getTitle());
-        stm.setLong(2, quiz.getCreatorUserId());
-        stm.setBoolean(3, quiz.isRandomQuestions());
-        stm.setBoolean(4, quiz.isOnePage());
-        stm.setBoolean(5, quiz.isImmediateFeedback());
-        stm.setBoolean(6, quiz.isPracticeMode());
-        stm.executeUpdate();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long quizId = res.getLong(1);
-        quiz.setId(quizId);
+    public void addQuiz (Quiz quiz) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("INSERT INTO quizzes (title, creator_id, " +
+                            "are_random_questions, is_one_page, is_immediate_feedback, " +
+                            "is_practice_mode) VALUES (?, ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, quiz.getTitle());
+            stm.setLong(2, quiz.getCreatorUserId());
+            stm.setBoolean(3, quiz.isRandomQuestions());
+            stm.setBoolean(4, quiz.isOnePage());
+            stm.setBoolean(5, quiz.isImmediateFeedback());
+            stm.setBoolean(6, quiz.isPracticeMode());
+            stm.executeUpdate();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long quizId = res.getLong(1);
+            quiz.setId(quizId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Quiz getQuiz (long quizId) throws SQLException {
