@@ -5,11 +5,11 @@ import com.quizzetta.Errors.AppError;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserNameValidator implements Validator {
+public class UsernameValidator implements Validator {
 
     private final String userName;
 
-    public UserNameValidator(String userName) {
+    public UsernameValidator(String userName) {
         this.userName = userName;
     }
 

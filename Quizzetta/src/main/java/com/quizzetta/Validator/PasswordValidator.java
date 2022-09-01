@@ -12,22 +12,21 @@ public class PasswordValidator implements Validator {
     public static final int PASSWORD_MIN_LENGTH = 8;
 
     public static final String PASSWORD_LENGTH_ERROR = "Password has to be contain at least 8 characters";
-
-
     public static final String PASSWORD_UPPERCASE_ERROR = "Password has to be contain at least 1 upper case character";
-
     public static final String PASSWORD_LOWERCASE_ERROR = "Password has to be contain at least 1 lower case character";
-
     public static final String PASSWORD_DIGIT_ERROR = "Password has to be contain at least 1 digit";
 
 
     private String password;
-    private  List<AppError> errors;
+    private List<AppError> errors;
+
     public PasswordValidator(String password) {
         this.password = password;
         errors = new ArrayList<>();
     }
 
+
+    // TODO PasswordValidator should not be using EmptyInputErrors.
     @Override
     public boolean validate() throws SQLException {
         if (password.length() < PASSWORD_MIN_LENGTH) {

@@ -3,7 +3,7 @@ package com.quizzetta.Sevices.SessionManagement;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Model.User;
-import com.quizzetta.Validator.LogInValidator;
+import com.quizzetta.Validator.LoginValidator;
 import com.google.gson.Gson;
 
 import javax.servlet.RequestDispatcher;
@@ -18,8 +18,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@WebServlet("/Login")
-public class LogIn extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (isLoggedIn(req)) {
@@ -33,28 +33,26 @@ public class LogIn extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection dataBaseConn = (Connection)req.getServletContext().getAttribute("dataBaseConn");
+        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("userDAO");
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        LogInValidator logInValidator = new LogInValidator(username, password, dataBaseConn);
+        LoginValidator loginValidator = new LoginValidator(username, password, userDAO);
 
-        try {
-            if (!logInValidator.validate()) {
-                List<AppError> errors = logInValidator.getErrors();
-
-                Gson gson = new Gson();
-                resp.getWriter().print(gson.toJson(errors));
-
-                return;
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        if (!loginValidator.validate()) {
+            List<AppError> errors = loginValidator.getErrors();
+            Gson gson = new Gson();
+            resp.getWriter().print(gson.toJson(errors));
+            // TODO SEND ERROR TO THE JSP
+            return;
         }
 
-        // Changed getSession to getServletContext()
-        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
+        User user = userDAO.getUser(username);
+
+        req.getSession().setAttribute("userId", user.getId());
+        req.getSession().setAttribute("username", user.getUsername());
+        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
 
 
 //        try { // User exists in database
@@ -69,8 +67,8 @@ public class LogIn extends HttpServlet {
     }
 
     private boolean isLoggedIn(HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("currentUserID"); // TODO
-        String userName = (String) request.getSession().getAttribute("currentUserName"); // TODO
+        Integer userId = (Integer) request.getSession().getAttribute("userId"); // TODO
+        String userName = (String) request.getSession().getAttribute("username"); // TODO
 
         return userId != null && userName != null;
     }

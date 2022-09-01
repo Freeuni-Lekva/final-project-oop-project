@@ -11,7 +11,7 @@ public class User {
     private boolean isAdmin;
     private List<User> friends;
 
-    public User (long id, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+    public User(long id, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -20,7 +20,7 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
-    public User (String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+    public User(String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -32,7 +32,9 @@ public class User {
         return id;
     }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -83,7 +85,7 @@ public class User {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
