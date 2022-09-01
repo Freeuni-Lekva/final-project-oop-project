@@ -17,8 +17,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
     private static final String REGISTER_PAGE_PATH = ""; // TODO
@@ -46,49 +44,68 @@ public class RegisterServlet extends HttpServlet {
 //        String email = req.getParameter("email");
 
         boolean isAdmin = false;
+        System.out.println("CONNECTIONAMDE AR MISULI: ");
 
         Connection dataBaseConn = (Connection) req.getServletContext().getAttribute("dataBaseConn"); // TODO needs review
+
+        UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
+        System.out.println("ADD USERAMDE AR MISULI: ");
+
+//        userDAO.addUser(new User("vmama20", Hasher.generateHash("pass"), "Vazha",
+//                "Mamatsashvili", false));
+        System.out.println("ADD USER MOXDA: ");
+
+
+        User test1 = userDAO.getUser("vmama20");
+        System.out.println(test1.getUsername());
+
+        System.out.println("ERRORAMDE AR MISULI: ");
 
         // TODO REGISTER NEEDS TO BE VALIDATED
 
         // ERRORS
         List<AppError> errors = new ArrayList<>();
-        RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, dataBaseConn);
+        RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, userDAO);
+        System.out.println("SQLAMDE AR MISULI: ");
 
-        try {
-            if (!regVal.validate()) {
-                errors = regVal.getErrors();
+        if (!regVal.validate()) {
+            System.out.println("Not Validated: ");
+            errors = regVal.getErrors();
+            for (AppError e : errors) {
+                System.out.println(e);
             }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
         }
+
 
         // check for caught errors
-        if (errors.size() != 0) {
-            Gson gson = new Gson();
-            resp.getWriter().println(gson.toJson(errors));
-            return;
+//        if (errors.size() != 0) {
+//            System.out.println("GSONSHI SHEMOSVLAAA");
+//            Gson gson = new Gson();
+//            resp.getWriter().println(gson.toJson(errors));
+//            return;
+//        }
+
+        for (AppError s : errors) {
+            System.out.println(s.getErrorMessage());
         }
 
-        UserDAO userDAO = (UserDAO) req.getSession().getAttribute("UserDAO");
-
+        // Add User to the Database.
         String passwordHash = Hasher.generateHash(password); // TODO LOGIC BEHIND THIS NEEDS TO BE REVIEWED
         User user = new User(username, passwordHash, firstName, lastName, isAdmin);
 
-        try {
-            userDAO.addUser(user);
-            req.getSession().setAttribute("currentUserId", user.getId()); // TODO KEYWORDS NEED TO BE REVIEWED
-            req.getSession().setAttribute("currentUserName", user.getUsername()); // TODO KEYWORDS NEED TO BE REVIEWED
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDAO.addUser(user);
+        req.getSession().setAttribute("userId", user.getId());
+        req.getSession().setAttribute("username", user.getUsername());
+
+        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
+
     }
 
 
     // Can change to only check if userId is not null.
     private boolean isLoggedIn(HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("currentUserId"); // TODO  MAKE SURE THE KEYWORD WORKS
-        String userName = (String) request.getSession().getAttribute("currentUserName"); // TODO SAME AS ABOVE
+        Integer userId = (Integer) request.getSession().getAttribute("userId"); // TODO  MAKE SURE THE KEYWORD WORKS
+        String userName = (String) request.getSession().getAttribute("username"); // TODO SAME AS ABOVE
 
         return userId != null && userName != null;
     }

@@ -1,9 +1,12 @@
 package com.quizzetta;
 import com.quizzetta.DAOs.*;
+import com.quizzetta.Model.DatabaseConnector;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 @WebListener
 public class ContextListener implements ServletContextListener {
@@ -11,19 +14,29 @@ public class ContextListener implements ServletContextListener {
     // TODO ADMIN NEEDS TO BE ADDED OR CHANGED
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        Connection dataBaseConn = (Connection) servletContextEvent.getServletContext().getAttribute("dataBaseConn"); // TODO CHECK WITH khanju
 
-        UserDAO userDAO = new UserDAO(dataBaseConn);
-        QuizDAO quizDAO = new QuizDAO(dataBaseConn);
+        Connection conn = null;
+        try {
+            conn = DatabaseConnector.getConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        StandardTextQuestionDAO standardTextQuestionDAO = new StandardTextQuestionDAO(dataBaseConn);
-        MultipleChoiceQuestionDAO multipleChoiceQuestionDAO = new MultipleChoiceQuestionDAO(dataBaseConn);
-        PictureResponseQuestionDAO pictureResponseQuestionDAO = new PictureResponseQuestionDAO(dataBaseConn);
-        FillTheBlankQuestionDAO fillTheBlankQuestionDAO = new FillTheBlankQuestionDAO(dataBaseConn);
+        servletContextEvent.getServletContext().setAttribute("dataBaseConn", conn); // TODO CHECK WITH khanju
 
-        NoteDAO noteDAO = new NoteDAO(dataBaseConn);
+        UserDAO userDAO = new UserDAO(conn);
+        QuizDAO quizDAO = new QuizDAO(conn);
 
-        FriendRequestDAO friendRequestDAO = new FriendRequestDAO(dataBaseConn);
+        StandardTextQuestionDAO standardTextQuestionDAO = new StandardTextQuestionDAO(conn);
+        MultipleChoiceQuestionDAO multipleChoiceQuestionDAO = new MultipleChoiceQuestionDAO(conn);
+        PictureResponseQuestionDAO pictureResponseQuestionDAO = new PictureResponseQuestionDAO(conn);
+        FillTheBlankQuestionDAO fillTheBlankQuestionDAO = new FillTheBlankQuestionDAO(conn);
+
+        NoteDAO noteDAO = new NoteDAO(conn);
+
+        FriendRequestDAO friendRequestDAO = new FriendRequestDAO(conn);
 
         // Sets
         servletContextEvent.getServletContext().setAttribute("UserDAO", userDAO);
