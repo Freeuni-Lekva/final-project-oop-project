@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Log in</title>
@@ -6,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <body>
-    <form action="RegisterServlet" method="post">
+    <form action="LoginServlet" method="post">
         <section class="vh-100" style="background-color: #eee;">
             <div class="container h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -17,6 +18,8 @@
                                     <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log In</p>
+
+                                        <h6 class="registration-error"><c:out value="${ErrorMessage}"/></h6>
 
                                         <form class="mx-1 mx-md-4">
 

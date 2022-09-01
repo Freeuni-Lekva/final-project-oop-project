@@ -1,12 +1,17 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Create Account</title>
 </head>
 
+<%--Using Javascript for client side Validation, servlet handles the server side validation.--%>
+<script src="Javascript/RegisterValidator.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <body>
-<form action="RegisterServlet" method="post">
+<form action="RegisterServlet" method="post" onsubmit="return check()">
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -18,8 +23,10 @@
 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
 
-                                    <form class="mx-1 mx-md-4">
+                                    <h6 class="registration-error"><c:out value="${ErrorMessage}"/></h6>
+                                    <%--                                    <h6><c:out value="${ErrorMessage}"></c:out></h6>--%>
 
+                                    <form class="mx-1 mx-md-4">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
@@ -56,16 +63,19 @@
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input id="password" type="password" name="password"
+                                                <input id="password" type="password" onkeyup="checkPassword()"
+                                                       name="password"
                                                        class="form-control"/>
                                                 <label class="form-label" for="password">Password</label>
                                             </div>
+                                            <span id = "msg"></span>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <input id="passwordRepeat" type="password" class="form-control"/>
+                                                <input id="passwordRepeat" type="password" onkeyup="checkPassword()"
+                                                       class="form-control"/>
                                                 <label class="form-label" for="passwordRepeat">Repeat your
                                                     password</label>
                                             </div>
