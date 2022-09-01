@@ -1,13 +1,11 @@
 package com.quizzetta.Errors;
 
-public class EmptyInputError implements AppError {
+public class WrongPasswordError implements AppError {
 
     private final String errorMessage;
     private final String inputFieldName;
-    private final String errorName;
 
-    public EmptyInputError(String inputFieldName, String errorMessage) {
-        this.errorName = "EmptyInputError";
+    public WrongPasswordError(String inputFieldName, String errorMessage) {
         this.inputFieldName = inputFieldName;
         this.errorMessage = errorMessage;
     }

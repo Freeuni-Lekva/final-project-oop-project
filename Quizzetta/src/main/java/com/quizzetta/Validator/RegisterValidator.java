@@ -86,19 +86,24 @@ public class RegisterValidator implements Validator {
 
     @Override
     public boolean validate() {
+//        try {
+//            System.out.println("SHEMOSVLA VALIDATESHI");
+//            boolean b1 = isEntirelyFilled();
+//            boolean b2 = isUniqueUserName();
+//            boolean b3 = isCorrectFormatForPassword();
+//            return b1 & b2 & b3;
+//        } catch (SQLException e) {
+//            System.out.println("SQL EXCEPTION: ");
+//            e.printStackTrace();
+//        }
+//        return false;
         try {
-            System.out.println("SHEMOSVLA VALIDATESHI");
-            boolean b1 = isEntirelyFilled();
-            boolean b2 = isUniqueUserName();
-            boolean b3 = isCorrectFormatForPassword();
-            return b1 & b2 & b3;
+            return isEntirelyFilled() && isUniqueUserName() && isCorrectFormatForPassword();
         } catch (SQLException e) {
             System.out.println("SQL EXCEPTION: ");
             e.printStackTrace();
         }
         return false;
-
-//        return isEntirelyFilled() && isUniqueUserName() && isCorrectFormatForPassword();
     } // TODO SHOULD WE CHECK ALL THE CASES OR RETURN ON THE FIRST FALSE
 
 

@@ -3,6 +3,8 @@ package com.quizzetta.Validator;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
+import com.quizzetta.Errors.UserNotFoundError;
+import com.quizzetta.Errors.WrongPasswordError;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,28 +26,25 @@ public class LoginValidator implements Validator {
 //        this.userDAO = userDAO;
         this.uniquenessValidator = new UniquenessValidator(userName, userDAO);
         this.passwordsMatchValidator = new PasswordsMatchValidator(userName, password, userDAO);
+        this.errors = new ArrayList<>();
+
     }
 
 
     @Override
     public boolean validate() {
-        try {
-            errors = new ArrayList<>();
 
-            if (userName == null) { // TODO SHOULD WE PRINT ALL MISSING INFO, OR JUST THE FIRST ONE
-                errors.add(new EmptyInputError("username", "Username Field has to be not empty"));
-            } else if (password == null) {
-                errors.add(new EmptyInputError("password", "Password Field has to be not empty"));
-            }
-
-            if (!passwordsMatchValidator.validate()) {
-                errors.addAll(passwordsMatchValidator.getErrors());
-            }
-            return errors.size() == 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        if (userName == null) { // TODO SHOULD WE PRINT ALL MISSING INFO, OR JUST THE FIRST ONE
+            errors.add(new EmptyInputError("username", "Username Field has to be not empty"));
+        } else if (password == null) {
+            errors.add(new EmptyInputError("password", "Password Field has to be not empty"));
         }
+
+        if (!passwordsMatchValidator.validate()) {
+            errors.addAll(passwordsMatchValidator.getErrors());
+            System.out.println("SHEMOSVLA LOGINVALIDATOR IF");
+        }
+        return errors.size() == 0;
     }
 
 

@@ -3,6 +3,7 @@ package com.quizzetta.Validator;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
+import com.quizzetta.Errors.UserNotFoundError;
 import com.quizzetta.Model.User;
 
 import javax.management.relation.RelationSupport;
@@ -35,11 +36,17 @@ public class UniquenessValidator implements Validator {
     }
 
     @Override
-    public boolean validate() throws SQLException {
+    public boolean validate() {
         System.out.println("SHEMOSVLA VALIDATESHI");
-        if (userDAO.getUser(username) != null) {
-            errors.add(new EmptyInputError("username", "The username is already taken"));
+        try {
+            if (userDAO.getUser(username) != null) {
+                errors.add(new EmptyInputError("username", "The username is already taken"));
+            }
+            return errors.size() == 0;
+        } catch (SQLException e) {
+            return true;
         }
+
 //
 //        if (username != null) {
 //            System.out.println("SHEMOSVLA IF STATEMENTSHI");
@@ -53,7 +60,6 @@ public class UniquenessValidator implements Validator {
 //            }
 //        }
 
-        return errors.size() == 0;
     }
 
     @Override
