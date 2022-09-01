@@ -19,46 +19,22 @@
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
 
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create Quiz</p>
+                                    <p class="text-center h1 fw-bold mb-1 mx-1 mx-md-4 mt-4">Generating Quiz: </p>
+                                    <p class="text-center h2 mb-5 mx-1 mx-md-4 mt-2"><c:out value="${quizName}"/></p>
 
-                                    <h6 class="registration-error"><c:out value="${QuizErrorMessage}"/></h6>
 
                                     <form class="mx-1 mx-md-4">
 
                                         <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label for="quizName" class="form-label">Name of the Quiz</label>
-                                                <input id="quizName" type="text" name="quizName" class="form-control"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label fw-bold"> Choose whether the questions should
-                                                    be
-                                                    randomized or in fixed order </label>
-                                                <div class="form-check">
-                                                    <input id="randomQuestionsBox" class="form-check-input"
-                                                           type="checkbox" value="hehe" name="randomQuestionsBox">
-                                                    <label class="form-check-label" for="randomQuestionsBox">
-                                                        Random Questions </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label fw-bold"> Choose whether you want the quiz to
-                                                    show correct answers immediately or at the end of the quiz </label>
-                                                <div class="form-check">
-                                                    <input id="immediateCorrectionsBox" class="form-check-input"
-                                                           type="checkbox" value="true" name="immediateCorrectionsBox">
-                                                    <label class="form-check-label" for="immediateCorrectionsBox">
-                                                        Immediate Corrections </label>
-                                                </div>
+                                                <label class="form-label fw-bold"> Choose the type of Question you want to create </label>
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Question-Response</option>
+                                                    <option value="1">Fill in the Blank</option>
+                                                    <option value="2">Multiple Choice</option>
+                                                    <option value="3">Picture-Response</option>
+                                                </select>
                                             </div>
                                         </div>
 
