@@ -19,33 +19,44 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addAnswer(ArrayList<Answer> answers, long questionId) throws SQLException {
-        for (Answer ans : answers) {
-            PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
-                                                            "(answer_text, question_id) VALUES (?, ?)",
-                                                            PreparedStatement.RETURN_GENERATED_KEYS);
-            stm.setString(1, ans.getText());
-            stm.setLong(2, questionId);
-            stm.execute();
-            ResultSet res = stm.getGeneratedKeys();
-            res.next();
-            long answerId = res.getLong(1);
-            ans.setId(answerId);
-            ans.setIsCorrect(true);
+    public void addAnswer(ArrayList<Answer> answers, long questionId) {
+        PreparedStatement stm;
+        try {
+            for (Answer ans : answers) {
+                stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
+                                "(answer_text, question_id) VALUES (?, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                stm.setString(1, ans.getText());
+                stm.setLong(2, questionId);
+                stm.execute();
+                ResultSet res = stm.getGeneratedKeys();
+                res.next();
+                long answerId = res.getLong(1);
+                ans.setId(answerId);
+                ans.setIsCorrect(true);
+            }
+        } catch(SQLException e) {
+            throw new RuntimeException();
         }
     }
 
     @Override
-    public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
-        stm.setLong(1, questionId);
-        ResultSet res = stm.executeQuery();
-        List<Answer> lst = new ArrayList<>();
-        while (res.next()) {
-            lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
-                               res.getLong("question_id"), true));
+    public List<Answer> getAnswer(long questionId) {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
+            stm.setLong(1, questionId);
+            ResultSet res = stm.executeQuery();
+            List<Answer> lst = new ArrayList<>();
+            while (res.next()) {
+                lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
+                        res.getLong("question_id"), true));
+            }
+            return lst;
+        } catch(SQLException e) {
+            throw new RuntimeException();
         }
-        return lst;
     }
 
     @Override
@@ -119,6 +130,7 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
     @Override
     public void removeQuestion(long questionId) {
         PreparedStatement stm;
+
         try {
             stm = myConn.prepareStatement("DELETE FROM pictureResponseQuestions WHERE id = ?");
             stm.setLong(1, questionId);

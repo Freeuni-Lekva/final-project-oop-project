@@ -75,7 +75,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addQuestion(Question question, long quizId) throws SQLException {
+    public void addQuestion(Question question, long quizId) {
         PreparedStatement stm;
 
         try {
@@ -95,7 +95,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public Question getQuestion(long questionId) throws SQLException {
+    public Question getQuestion(long questionId) {
         PreparedStatement stm;
 
         try {
@@ -129,7 +129,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void removeQuestion(long questionId) throws SQLException {
+    public void removeQuestion(long questionId) {
         PreparedStatement stm;
 
         try {

@@ -42,7 +42,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public List<Answer> getAnswer(long questionId) throws SQLException {
+    public List<Answer> getAnswer(long questionId) {
         PreparedStatement stm;
 
         try {
