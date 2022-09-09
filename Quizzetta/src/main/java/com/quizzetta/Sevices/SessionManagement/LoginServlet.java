@@ -2,6 +2,7 @@ package com.quizzetta.Sevices.SessionManagement;
 
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.User;
 import com.quizzetta.Validator.LoginValidator;
 import com.google.gson.Gson;
@@ -44,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 
         if (!loginValidator.validate()) {
             System.out.println("SHEMOSVLA");
-            List<AppError> errors = loginValidator.getErrors();
+            List<ValidationError> errors = loginValidator.getErrors();
             System.out.println("Validator passed");
 //            Gson gson = new Gson();
 //            resp.getWriter().print(gson.toJson(errors));
@@ -62,7 +63,8 @@ public class LoginServlet extends HttpServlet {
 
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
-        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
+        resp.sendRedirect("HomepageLoggedIn.jsp");
+//        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
 
 
 //        try { // User exists in database

@@ -2,6 +2,7 @@ package com.quizzetta.Sevices.Register;
 
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Hasher;
 import com.quizzetta.Model.User;
 import com.quizzetta.Validator.RegisterValidator;
@@ -56,7 +57,7 @@ public class RegisterServlet extends HttpServlet {
         System.out.println("ERRORAMDE AR MISULI: ");
 
         // ERRORS
-        List<AppError> errors = new ArrayList<>();
+        List<ValidationError> errors = new ArrayList<>();
         RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, userDAO);
         System.out.println("SQLAMDE AR MISULI: ");
 
@@ -64,7 +65,7 @@ public class RegisterServlet extends HttpServlet {
         if (!regVal.validate()) {
             System.out.println("Not Validated: ");
             errors = regVal.getErrors();
-            for (AppError e : errors) {
+            for (ValidationError e : errors) {
                 System.out.println(e.getErrorMessage());
             }
 //            errors.get(0).getErrorMessage()
@@ -74,7 +75,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        for (AppError s : errors) {
+        for (ValidationError s : errors) {
             System.out.println(s.getErrorMessage());
         }
 
