@@ -89,4 +89,16 @@ public class QuizDAO {
         }
         return allQuizzes;
     }
+
+    public List<Quiz> getAllQuizzesOfAnAuthor(long author_id) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes WHERE author_id = ? ORDER BY id ASC");
+        stm.setLong(1, author_id);
+        ResultSet res = stm.executeQuery();
+        List<Quiz> allQuizzes = new ArrayList<>();
+        while (res.next()) {
+            allQuizzes.add(getQuiz(res.getLong("id")));
+        }
+        return allQuizzes;
+    }
+
 }
