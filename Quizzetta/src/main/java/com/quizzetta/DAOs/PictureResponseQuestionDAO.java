@@ -19,83 +19,124 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addAnswer(ArrayList<Answer> answers, long questionId) throws SQLException {
-        for (Answer ans : answers) {
-            PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
-                                                            "(answer_text, question_id) VALUES (?, ?)",
-                                                            PreparedStatement.RETURN_GENERATED_KEYS);
-            stm.setString(1, ans.getText());
-            stm.setLong(2, questionId);
+    public void addAnswer(ArrayList<Answer> answers, long questionId) {
+        PreparedStatement stm;
+        try {
+            for (Answer ans : answers) {
+                stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
+                                "(answer_text, question_id) VALUES (?, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                stm.setString(1, ans.getText());
+                stm.setLong(2, questionId);
+                stm.execute();
+                ResultSet res = stm.getGeneratedKeys();
+                res.next();
+                long answerId = res.getLong(1);
+                ans.setId(answerId);
+                ans.setIsCorrect(true);
+            }
+        } catch(SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Answer> getAnswer(long questionId) {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
+            stm.setLong(1, questionId);
+            ResultSet res = stm.executeQuery();
+            List<Answer> lst = new ArrayList<>();
+            while (res.next()) {
+                lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
+                        res.getLong("question_id"), true));
+            }
+            return lst;
+        } catch(SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void removeAnswer(long answerId) {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("DELETE FROM pictureResponseAnswers WHERE id = ?");
+            stm.setLong(1, answerId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void addQuestion(Question question, long quizId)  {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("INSERT INTO pictureResponseQuestions " +
+                            "(question_text, url, quiz_id) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, question.getText());
+            stm.setString(2, question.getImageUrl());
+            stm.setLong(3, quizId);
             stm.execute();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
-            long answerId = res.getLong(1);
-            ans.setId(answerId);
-            ans.setIsCorrect(true);
+            long questionId = res.getLong(1);
+            question.setId(questionId);
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
     }
 
     @Override
-    public List<Answer> getAnswer(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
-        stm.setLong(1, questionId);
-        ResultSet res = stm.executeQuery();
-        List<Answer> lst = new ArrayList<>();
-        while (res.next()) {
-            lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
-                               res.getLong("question_id"), true));
+    public Question getQuestion(long questionId) {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE id = ?");
+            stm.setLong(1, questionId);
+            ResultSet res = stm.executeQuery();
+            res.next();
+            return new Question(res.getLong("id"), res.getString("question_text"),
+                    res.getLong("quiz_id"), res.getString("url"), 1);
+        }catch (SQLException e) {
+            throw new RuntimeException();
         }
-        return lst;
     }
 
     @Override
-    public void removeAnswer(long answerId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM pictureResponseAnswers WHERE id = ?");
-        stm.setLong(1, answerId);
-        stm.executeUpdate();
-    }
+    public List<Question> getAllQuestions(long quizId) {
+        PreparedStatement stm;
 
-    @Override
-    public void addQuestion(Question question, long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseQuestions " +
-                                                        "(question_text, url, quiz_id) VALUES (?, ?, ?)",
-                                                        PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, question.getText());
-        stm.setString(2, question.getImageUrl());
-        stm.setLong(3, quizId);
-        stm.execute();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long questionId = res.getLong(1);
-        question.setId(questionId);
-    }
-
-    @Override
-    public Question getQuestion(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE id = ?");
-        stm.setLong(1, questionId);
-        ResultSet res = stm.executeQuery();
-        res.next();
-        return new Question (res.getLong("id"), res.getString("question_text"),
-                             res.getLong("quiz_id"), res.getString("url"), 1);
-    }
-
-    @Override
-    public List<Question> getAllQuestions(long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE quiz_id = ?");
-        stm.setLong(1, quizId);
-        List<Question> questionList = new ArrayList<>();
-        ResultSet res = stm.executeQuery();
-        while (res.next()) {
-            questionList.add(getQuestion(res.getLong("id")));
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM pictureResponseQuestions WHERE quiz_id = ?");
+            stm.setLong(1, quizId);
+            List<Question> questionList = new ArrayList<>();
+            ResultSet res = stm.executeQuery();
+            while (res.next()) {
+                questionList.add(getQuestion(res.getLong("id")));
+            }
+            return questionList;
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
-        return questionList;
     }
 
     @Override
-    public void removeQuestion(long questionId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM pictureResponseQuestions WHERE id = ?");
-        stm.setLong(1, questionId);
-        stm.executeUpdate();
+    public void removeQuestion(long questionId) {
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("DELETE FROM pictureResponseQuestions WHERE id = ?");
+            stm.setLong(1, questionId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 }
