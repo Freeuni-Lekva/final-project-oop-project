@@ -19,19 +19,23 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addAnswer(ArrayList<Answer> answers, long questionId) throws SQLException {
-        for (Answer ans : answers) {
-            PreparedStatement stm = myConn.prepareStatement("INSERT INTO multipleChoiceAnswers (answer_text," +
-                                                            " question_id, is_correct) VALUES (?, ?, ?)",
-                                                            PreparedStatement.RETURN_GENERATED_KEYS);
-            stm.setString(1, ans.getText());
-            stm.setLong(2, questionId);
-            stm.setBoolean(3, ans.isCorrect());
-            stm.execute();
-            ResultSet res = stm.getGeneratedKeys();
-            res.next();
-            long answerId = res.getLong(1);
-            ans.setId(answerId);
+    public void addAnswer(ArrayList<Answer> answers, long questionId) {
+        try {
+            for (Answer ans : answers) {
+                PreparedStatement stm = myConn.prepareStatement("INSERT INTO multipleChoiceAnswers (answer_text," +
+                                " question_id, is_correct) VALUES (?, ?, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                stm.setString(1, ans.getText());
+                stm.setLong(2, questionId);
+                stm.setBoolean(3, ans.isCorrect());
+                stm.execute();
+                ResultSet res = stm.getGeneratedKeys();
+                res.next();
+                long answerId = res.getLong(1);
+                ans.setId(answerId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,18 +60,22 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addQuestion(Question question, long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO multipleChoiceQuestions (question_text, " +
-                                                        "quiz_id, num_of_answers) VALUES (?, ?, ?)",
-                                                        PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, question.getText());
-        stm.setLong(2, quizId);
-        stm.setInt(3, question.getNumOfAnswers());
-        stm.execute();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long questionId = res.getLong(1);
-        question.setId(questionId);
+    public void addQuestion(Question question, long quizId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("INSERT INTO multipleChoiceQuestions (question_text, " +
+                            "quiz_id, num_of_answers) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, question.getText());
+            stm.setLong(2, quizId);
+            stm.setInt(3, question.getNumOfAnswers());
+            stm.execute();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long questionId = res.getLong(1);
+            question.setId(questionId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

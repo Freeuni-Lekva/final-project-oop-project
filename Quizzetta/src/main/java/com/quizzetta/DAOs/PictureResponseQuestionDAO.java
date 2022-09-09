@@ -14,7 +14,7 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
 
     private final Connection myConn;
 
-    public PictureResponseQuestionDAO (Connection conn) {
+    public PictureResponseQuestionDAO(Connection conn) {
         myConn = conn;
     }
 
@@ -22,8 +22,8 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
     public void addAnswer(ArrayList<Answer> answers, long questionId) throws SQLException {
         for (Answer ans : answers) {
             PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
-                                                            "(answer_text, question_id) VALUES (?, ?)",
-                                                            PreparedStatement.RETURN_GENERATED_KEYS);
+                            "(answer_text, question_id) VALUES (?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, ans.getText());
             stm.setLong(2, questionId);
             stm.execute();
@@ -35,6 +35,25 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
         }
     }
 
+    public void addAnswer(Answer answer, long questionId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseAnswers " +
+                            "(answer_text, question_id) VALUES (?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, answer.getText());
+            stm.setLong(2, questionId);
+            stm.execute();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long answerId = res.getLong(1);
+            answer.setId(answerId);
+            answer.setIsCorrect(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public List<Answer> getAnswer(long questionId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM pictureResponseAnswers WHERE question_id = ?");
@@ -43,7 +62,7 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
         List<Answer> lst = new ArrayList<>();
         while (res.next()) {
             lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
-                               res.getLong("question_id"), true));
+                    res.getLong("question_id"), true));
         }
         return lst;
     }
@@ -56,18 +75,22 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
     }
 
     @Override
-    public void addQuestion(Question question, long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseQuestions " +
-                                                        "(question_text, url, quiz_id) VALUES (?, ?, ?)",
-                                                        PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, question.getText());
-        stm.setString(2, question.getImageUrl());
-        stm.setLong(3, quizId);
-        stm.execute();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long questionId = res.getLong(1);
-        question.setId(questionId);
+    public void addQuestion(Question question, long quizId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("INSERT INTO pictureResponseQuestions " +
+                            "(question_text, url, quiz_id) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, question.getText());
+            stm.setString(2, question.getImageUrl());
+            stm.setLong(3, quizId);
+            stm.execute();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long questionId = res.getLong(1);
+            question.setId(questionId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,8 +99,8 @@ public class PictureResponseQuestionDAO implements QuestionDAO, AnswerDAO {
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         res.next();
-        return new Question (res.getLong("id"), res.getString("question_text"),
-                             res.getLong("quiz_id"), res.getString("url"), 1);
+        return new Question(res.getLong("id"), res.getString("question_text"),
+                res.getLong("quiz_id"), res.getString("url"), 1);
     }
 
     @Override
