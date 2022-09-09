@@ -4,6 +4,7 @@ import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
 import com.quizzetta.Errors.UserNotFoundError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.User;
 
 import javax.management.relation.RelationSupport;
@@ -21,7 +22,7 @@ public class UniquenessValidator implements Validator {
     UserDAO userDAO;
 
 
-    private List<AppError> errors;
+    private List<ValidationError> errors;
 
     public UniquenessValidator(String username, UserDAO userDAO) {
 //        if (username == null) {
@@ -40,7 +41,7 @@ public class UniquenessValidator implements Validator {
         System.out.println("SHEMOSVLA VALIDATESHI");
         try {
             if (userDAO.getUser(username) != null) {
-                errors.add(new EmptyInputError("username", "The username is already taken"));
+                errors.add(new ValidationError("The username is already taken"));
             }
             return errors.size() == 0;
         } catch (SQLException e) {
@@ -63,7 +64,7 @@ public class UniquenessValidator implements Validator {
     }
 
     @Override
-    public List<AppError> getErrors() {
+    public List<ValidationError> getErrors() {
         return errors;
     }
 }

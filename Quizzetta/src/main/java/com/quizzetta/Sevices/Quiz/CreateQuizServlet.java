@@ -2,6 +2,7 @@ package com.quizzetta.Sevices.Quiz;
 
 import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.Quiz;
 import com.quizzetta.Validator.QuizValidator;
 
@@ -30,14 +31,13 @@ public class CreateQuizServlet extends HttpServlet {
 //        long userId = (long) req.getSession().getAttribute("userId");
 
         System.out.println("AI AQ");
-//        System.out.println(req.getParameter("randomQuestionsBox"));
-//        long creatorUserId
-        boolean isRandomizedOrder = (String) req.getParameter("randomQuestionsBox") != null;
-        boolean isOnePage = (String) req.getParameter("onePageButton") != null;
-        boolean immediateFeedback = (String) req.getParameter("immediateFeedbackBox") != null;
-        boolean isPracticeMode = (String) req.getParameter("practiceModeBox") != null;
 
-        String questionCount = (String) req.getParameter("numberOfQuestions");
+        boolean isRandomizedOrder = req.getParameter("randomQuestionsBox") != null;
+        boolean isOnePage = req.getParameter("onePageButton") != null;
+        boolean immediateFeedback = req.getParameter("immediateFeedbackBox") != null;
+        boolean isPracticeMode = req.getParameter("practiceModeBox") != null;
+
+        String questionCount = req.getParameter("numberOfQuestions");
 
         System.out.println(name);
         System.out.println(isRandomizedOrder);
@@ -50,13 +50,17 @@ public class CreateQuizServlet extends HttpServlet {
         QuizValidator quizValidator = new QuizValidator(questionCount);
 
         if (!quizValidator.validate()) {
-            List<AppError> errors = quizValidator.getErrors();
+            List<ValidationError> errors = quizValidator.getErrors();
             req.getSession().setAttribute("QuizErrorMessage", errors.get(0).getErrorMessage());
             req.getRequestDispatcher("CreateQuiz.jsp").forward(req, resp);
             return;
         }
 
         req.getSession().setAttribute("quizName", name);
+        req.getSession().setAttribute("totalQuestionCount", Integer.valueOf(questionCount));
+        req.getSession().setAttribute("quiz", quiz);
+        req.getSession().setAttribute("questionCount", 0);
+        req.getSession().setAttribute("numberOfQuestions", questionCount);
         quizDAO.addQuiz(quiz);
         req.getRequestDispatcher("Questions.jsp").forward(req, resp);
 

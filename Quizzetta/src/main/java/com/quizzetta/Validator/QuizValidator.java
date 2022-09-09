@@ -3,6 +3,7 @@ package com.quizzetta.Validator;
 import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.UserNotFoundError;
+import com.quizzetta.Errors.ValidationError;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class QuizValidator implements Validator {
 
 //    private final String id;
     private final String questionCount;
-    private final List<AppError> errors;
+    private final List<ValidationError> errors;
 //    private QuizDAO quizDAO;
 
     public QuizValidator(String questionCount) {
@@ -24,17 +25,25 @@ public class QuizValidator implements Validator {
     @Override
     public boolean validate() {
         try {
-            Integer.parseInt(questionCount);
+            int count = Integer.parseInt(questionCount);
+            if (count < 1) {
+                errors.add(new ValidationError("The number of questions has to be greater than 1"));
+                return false;
+            }
+            if (count > 99) {
+                errors.add(new ValidationError("The number of questions has to be less than 100"));
+            }
+
             return true;
         } catch (NumberFormatException e) {
-            errors.add(new UserNotFoundError("quizId", "Please enter an integer type for the question count"));
+            errors.add(new ValidationError("Please enter an integer type for the question count"));
             e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public List<AppError> getErrors() {
+    public List<ValidationError> getErrors() {
         return errors;
     }
 }

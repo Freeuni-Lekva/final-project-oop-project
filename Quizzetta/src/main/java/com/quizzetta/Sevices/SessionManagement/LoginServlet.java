@@ -1,10 +1,9 @@
 package com.quizzetta.Sevices.SessionManagement;
 
 import com.quizzetta.DAOs.UserDAO;
-import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.User;
-import com.quizzetta.Validator.LoginValidator;
-import com.google.gson.Gson;
+import com.quizzetta.Validator.LogInValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,12 +37,12 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        LoginValidator loginValidator = new LoginValidator(username, password, userDAO);
+        LogInValidator loginValidator = new LogInValidator(username, password, userDAO);
         System.out.println("AXLA AQQQ :P");
 
         if (!loginValidator.validate()) {
             System.out.println("SHEMOSVLA");
-            List<AppError> errors = loginValidator.getErrors();
+            List<ValidationError> errors = loginValidator.getErrors();
             System.out.println("Validator passed");
 //            Gson gson = new Gson();
 //            resp.getWriter().print(gson.toJson(errors));
@@ -62,7 +60,8 @@ public class LoginServlet extends HttpServlet {
 
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
-        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
+        resp.sendRedirect("HomepageLoggedIn.jsp");
+//        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
 
 
 //        try { // User exists in database

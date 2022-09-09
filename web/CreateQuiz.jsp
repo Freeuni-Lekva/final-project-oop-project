@@ -21,7 +21,8 @@
 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create Quiz</p>
 
-                                    <h6 class="registration-error"><c:out value="${QuizErrorMessage}"/></h6>
+                                    <h6 class="registration-error" style="color:darkred"><c:out
+                                            value="${QuizErrorMessage}"/></h6>
 
                                     <form class="mx-1 mx-md-4">
 
@@ -92,7 +93,7 @@
                                                     <input id="practiceModeBox" class="form-check-input"
                                                            type="checkbox" value="true" name="practiceModeBox">
                                                     <label class="form-check-label" for="practiceModeBox">
-                                                        Random Questions </label>
+                                                        Practice Mode </label>
                                                 </div>
                                             </div>
                                         </div>

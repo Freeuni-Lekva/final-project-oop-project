@@ -3,6 +3,7 @@ package com.quizzetta.Validator;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.HelperClasses.Pair;
 import com.quizzetta.Model.User;
 //import com.sun.tools.javac.util.Pair;
@@ -22,7 +23,7 @@ public class RegisterValidator implements Validator {
     private final UserDAO userDAO;
 //    private final Connection connection;
 
-    private List<AppError> errors;
+    private List<ValidationError> errors;
 
     public RegisterValidator(String username, String firstName, String lastName, String password, UserDAO userDAO) {
         this.username = username;
@@ -53,7 +54,7 @@ public class RegisterValidator implements Validator {
 
             if (value == null) {
                 String keyText = String.valueOf(key.charAt(0)).toUpperCase() + key.substring(1);
-                errors.add(new EmptyInputError(key, keyText + " has to be be inputed"));
+                errors.add(new ValidationError(keyText + " has to be be inputed"));
             }
         }
         System.out.println("IS ENTIRELY FILLED PASSED");
@@ -108,7 +109,7 @@ public class RegisterValidator implements Validator {
 
 
     @Override
-    public List<AppError> getErrors() {
+    public List<ValidationError> getErrors() {
         return errors;
     }
 }

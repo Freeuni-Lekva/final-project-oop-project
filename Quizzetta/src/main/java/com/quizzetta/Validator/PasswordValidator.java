@@ -2,6 +2,7 @@ package com.quizzetta.Validator;
 
 import com.quizzetta.Errors.AppError;
 import com.quizzetta.Errors.EmptyInputError;
+import com.quizzetta.Errors.ValidationError;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class PasswordValidator implements Validator {
 
 
     private String password;
-    private List<AppError> errors;
+    private List<ValidationError> errors;
 
     public PasswordValidator(String password) {
         this.password = password;
@@ -30,7 +31,7 @@ public class PasswordValidator implements Validator {
     @Override
     public boolean validate() throws SQLException {
         if (password.length() < PASSWORD_MIN_LENGTH) {
-            errors.add(new EmptyInputError("password", PASSWORD_LENGTH_ERROR));
+            errors.add(new ValidationError(PASSWORD_LENGTH_ERROR));
         }
 
         Pattern upperCaseValuesPattern = Pattern.compile("[A-Z]");
@@ -38,22 +39,22 @@ public class PasswordValidator implements Validator {
         Pattern digitValuesPattern = Pattern.compile("[0-9]");
 
         if (!upperCaseValuesPattern.matcher(password).find()) {
-            errors.add(new EmptyInputError("password", PASSWORD_UPPERCASE_ERROR));
+            errors.add(new ValidationError(PASSWORD_UPPERCASE_ERROR));
         }
 
         if (!lowerCaseValuesPattern.matcher(password).find()) {
-            errors.add(new EmptyInputError("password", PASSWORD_LOWERCASE_ERROR));
+            errors.add(new ValidationError(PASSWORD_LOWERCASE_ERROR));
         }
 
         if (!digitValuesPattern.matcher(password).find()) {
-            errors.add(new EmptyInputError("password", PASSWORD_DIGIT_ERROR));
+            errors.add(new ValidationError(PASSWORD_DIGIT_ERROR));
         }
 
         return errors.size() == 0;
     }
 
     @Override
-    public List<AppError> getErrors() {
+    public List<ValidationError> getErrors() {
         return errors;
     }
 }
