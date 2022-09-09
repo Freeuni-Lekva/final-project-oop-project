@@ -69,7 +69,7 @@ public class QuizDAO {
         }
     }
 
-    public List<Question> getQuizQuestions (long quizId) {
+    public List<Question> getQuizQuestions (long quizId) throws SQLException {
         List<Question> res = new ArrayList<>();
 
         StandardTextQuestionDAO standard = new StandardTextQuestionDAO(myConn);

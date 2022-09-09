@@ -1,15 +1,15 @@
 package com.quizzetta.Validator;
 
-import com.quizzetta.Errors.AppError;
+import com.quizzetta.Errors.ValidationError;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class UsernameValidator implements Validator {
+public class UserNameValidator implements Validator {
 
     private final String userName;
 
-    public UsernameValidator(String userName) {
+    public UserNameValidator(String userName) {
         this.userName = userName;
     }
 
@@ -19,7 +19,7 @@ public class UsernameValidator implements Validator {
     }
 
     @Override
-    public List<AppError> getErrors() {
+    public List<ValidationError> getErrors() {
         return null;
     }
 }
