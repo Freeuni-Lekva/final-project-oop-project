@@ -6,7 +6,7 @@ import com.quizzetta.Errors.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginValidator implements Validator {
+public class LogInValidator implements Validator {
 
     private final String userName;
     private final String password;
@@ -16,7 +16,7 @@ public class LoginValidator implements Validator {
     private PasswordsMatchValidator passwordsMatchValidator;
 
 
-    public LoginValidator(String userName, String password, UserDAO userDAO) {
+    public LogInValidator(String userName, String password, UserDAO userDAO) {
         this.userName = userName;
         this.password = password;
 //        this.userDAO = userDAO;
