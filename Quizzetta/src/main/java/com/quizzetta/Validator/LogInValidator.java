@@ -38,7 +38,6 @@ public class LogInValidator implements Validator {
 
         if (!passwordsMatchValidator.validate()) {
             errors.addAll(passwordsMatchValidator.getErrors());
-            System.out.println("SHEMOSVLA LOGINVALIDATOR IF");
         }
         return errors.size() == 0;
     }

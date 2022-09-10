@@ -14,12 +14,12 @@ public class DatabaseConnector {
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         String dbName = "quiz_db";
         String sqlUsername = "root";
-        String sqlPassword = "rootroot";
+        String sqlPassword = "strongpassword";
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, sqlUsername, sqlPassword);}
 
     public static void resetTables() throws IOException, SQLException, ClassNotFoundException {
-        String filePath = "C:\\Users\\tbark\\Desktop\\project\\resetTables.sql";
+        String filePath = "C:\\Users\\Erybor\\Desktop\\final-project-oop-project\\resetTables.sql";
         StringBuilder sql = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String str;
