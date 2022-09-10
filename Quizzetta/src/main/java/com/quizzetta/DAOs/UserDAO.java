@@ -21,14 +21,15 @@ public class UserDAO {
     public void addUser(User user) {
         PreparedStatement stm = null;
         try {
-            stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
-                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
+            stm = myConn.prepareStatement("INSERT INTO userTable (email, username, password_hash," +
+                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            stm.setString(1, user.getUsername());
-            stm.setString(2, user.getPasswordHash());
-            stm.setString(3, user.getFirstName());
-            stm.setString(4, user.getLastName());
-            stm.setBoolean(5, user.isAdmin());
+            stm.setString(1, user.getEmail());
+            stm.setString(2, user.getUsername());
+            stm.setString(3, user.getPasswordHash());
+            stm.setString(4, user.getFirstName());
+            stm.setString(5, user.getLastName());
+            stm.setBoolean(6, user.isAdmin());
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
@@ -49,7 +50,7 @@ public class UserDAO {
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         res.next();
-        return new User(res.getLong("id"), res.getString("username"),
+        return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"));
     }
@@ -61,7 +62,7 @@ public class UserDAO {
         ResultSet res = stm.executeQuery();
 
         res.next();
-        return new User(res.getLong("id"), res.getString("username"),
+        return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"));
 

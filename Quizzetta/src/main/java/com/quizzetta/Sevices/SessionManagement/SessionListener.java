@@ -7,7 +7,8 @@ import javax.servlet.http.HttpSessionListener;
 import java.sql.Connection;
 
 
-public class SessionListener implements HttpSessionListener {
+public class
+SessionListener implements HttpSessionListener {
 
     // TODO ADMIN NEEDS TO BE ADDED OR CHANGED
     @Override

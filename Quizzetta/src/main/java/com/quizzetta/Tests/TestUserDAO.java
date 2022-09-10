@@ -1,3 +1,5 @@
+package com.quizzetta.Tests;
+
 import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Hasher;
@@ -26,13 +28,13 @@ public class TestUserDAO extends TestCase {
     public void setUp () throws SQLException, IOException, ClassNotFoundException {
         DatabaseConnector.resetTables();
         user1 = new User("kakhv20@gmail.com","kakhv20", Hasher.generateHash("pass"), "Kakha",
-                "Akhvlediani", false);
+                         "Akhvlediani", false);
         user2 = new User("malkh19@gmail.com","malkh19", Hasher.generateHash("pass"), "Misho",
-                "Alkhanashvili", false);
+                         "Alkhanashvili", false);
         user3 = new User("tbark19@gmail.com", "tbark19", Hasher.generateHash("pass"), "Temuka",
-                "Barkaia", false);
+                         "Barkaia", false);
         user4 = new User("vmama20@gmail.com", "vmama20", Hasher.generateHash("pass"), "Vajha",
-                "Mamatsashvili", false);
+                         "Mamatsashvili", false);
         Connection myConn = DatabaseConnector.getConnection();
         dao = new UserDAO(myConn);
         quizDao = new QuizDAO(myConn);
@@ -65,25 +67,25 @@ public class TestUserDAO extends TestCase {
 
     public void testQuizHistory() throws SQLException {
         Quiz quiz1 = new Quiz("Quiz#1", 1, false, false,
-                false, false);
+                              false, false);
         quizDao.addQuiz(quiz1);
         Quiz quiz2 = new Quiz("Quiz#2", 1, false, false,
-                false, false);
+                              false, false);
         quizDao.addQuiz(quiz2);
         Quiz quiz3 = new Quiz("Quiz#3", 1, false, false,
-                false, false);
+                              false, false);
         quizDao.addQuiz(quiz3);
         Quiz quiz4 = new Quiz("Quiz#4", 2, false, false,
-                false, false);
+                              false, false);
         quizDao.addQuiz(quiz4);
         TakenQuiz tquiz1 = new TakenQuiz(user1.getId(), quiz1.getId(), 100,
-                new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
         TakenQuiz tquiz2 = new TakenQuiz(user1.getId(), quiz2.getId(), 100,
-                new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
         TakenQuiz tquiz3 = new TakenQuiz(user1.getId(), quiz3.getId(), 100,
-                new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
         TakenQuiz tquiz4 = new TakenQuiz(user1.getId(), quiz4.getId(), 100,
-                new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+                           new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
         dao.takeTheQuiz(tquiz1);
         dao.takeTheQuiz(tquiz2);
         dao.takeTheQuiz(tquiz3);
