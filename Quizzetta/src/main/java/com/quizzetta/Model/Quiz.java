@@ -1,6 +1,5 @@
 package com.quizzetta.Model;
 
-import java.util.Date;
 import java.util.List;
 
 public class Quiz {
@@ -13,11 +12,6 @@ public class Quiz {
     private boolean immediateFeedback;
     private boolean practiceMode;
     private List<Question> questions;
-    private int numberOfUses;
-
-    private Date creationDate;
-
-    private int authorId;
 
 
     public Quiz(long id, String title, long creatorUserId, boolean randomQuestions, boolean onePage,
@@ -29,8 +23,6 @@ public class Quiz {
         this.onePage = onePage;
         this.immediateFeedback = immediateFeedback;
         this.practiceMode = practiceMode;
-        this.numberOfUses = 0;
-        this.creationDate = new Date();
     }
 
     public Quiz(String title, long creatorUserId, boolean randomQuestions, boolean onePage, boolean immediateFeedback, boolean practiceMode) {
@@ -40,8 +32,6 @@ public class Quiz {
         this.onePage = onePage;
         this.immediateFeedback = immediateFeedback;
         this.practiceMode = practiceMode;
-        this.numberOfUses = 0;
-        this.creationDate = new Date();
     }
 
     public List<Question> getQuestions() {
@@ -107,19 +97,4 @@ public class Quiz {
     public void setPracticeMode(boolean practiceMode) {
         this.practiceMode = practiceMode;
     }
-
-    public int getNumberOfUses() {
-        return numberOfUses;
-    }
-
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-
 }
