@@ -1,5 +1,3 @@
-package com.quizzetta.Tests;
-
 import com.quizzetta.Hasher;
 import junit.framework.TestCase;
 
