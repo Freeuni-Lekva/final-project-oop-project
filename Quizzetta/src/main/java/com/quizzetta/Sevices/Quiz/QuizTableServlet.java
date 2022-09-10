@@ -5,6 +5,7 @@ import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Model.Quiz;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+//@WebServlet("") TODO
 public class QuizTableServlet extends HttpServlet {
 
     private static final int NUM_OF_QUIZZES_IN_CATEGORY = 5;
