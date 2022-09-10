@@ -227,5 +227,5 @@ CREATE TABLE userHistory (
 );
 
 #for testing purposes
-#INSERT INTO userTable VALUES(1, "Khabju", "asd", "Temur", "Barkaia", TRUE);
-#INSERT INTO userTable VALUES(2, "Temo", "assd", "Temuka", "Barkaia", TRUE);
+#INSERT INTO userTable VALUES(1, "mail1", "Khabju", "asd", "Temur", "Barkaia", TRUE);
+#INSERT INTO userTable VALUES(2, "mail2", "Temo", "assd", "Temuka", "Barkaia", TRUE);

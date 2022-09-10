@@ -26,11 +26,7 @@ public class TakeQuizServlet extends HttpServlet {
         long quizId = (long) req.getSession().getAttribute("quizId");;
 
         Quiz quiz = null;
-        try {
-            quiz = quizDAO.getQuiz(quizId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        quiz = quizDAO.getQuiz(quizId);
         req.setAttribute("questionList", quiz.getQuestions());
 //        req.setAttribute("quizId", quizId);
 
@@ -54,11 +50,7 @@ public class TakeQuizServlet extends HttpServlet {
         long quizId = (long) req.getSession().getAttribute("quizId");
 
         Quiz quiz = null;
-        try {
-            quiz = quizDAO.getQuiz(quizId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        quiz = quizDAO.getQuiz(quizId);
         List<Question> questionsList = quiz.getQuestions();
         List<Pair<Question, Answer>> questionAnswer;
 

@@ -66,16 +66,21 @@ public class QuizDAO {
         stm.executeUpdate();
     }
 
-    public List<Question> getQuizQuestions (long quizId) throws SQLException {
-        StandardTextQuestionDAO standard = new StandardTextQuestionDAO(myConn);
-        List<Question> res = new ArrayList<>(standard.getAllQuestions(quizId));
-        FillTheBlankQuestionDAO fillBlank = new FillTheBlankQuestionDAO(myConn);
-        res.addAll(fillBlank.getAllQuestions(quizId));
-        MultipleChoiceQuestionDAO multiple = new MultipleChoiceQuestionDAO(myConn);
-        res.addAll(multiple.getAllQuestions(quizId));
-        PictureResponseQuestionDAO picture = new PictureResponseQuestionDAO(myConn);
-        res.addAll(picture.getAllQuestions(quizId));
-        return res;
+    public List<Question> getQuizQuestions (long quizId){
+        try {
+            StandardTextQuestionDAO standard = new StandardTextQuestionDAO(myConn);
+            List<Question> res = new ArrayList<>(standard.getAllQuestions(quizId));
+            FillTheBlankQuestionDAO fillBlank = new FillTheBlankQuestionDAO(myConn);
+            res.addAll(fillBlank.getAllQuestions(quizId));
+            MultipleChoiceQuestionDAO multiple = new MultipleChoiceQuestionDAO(myConn);
+            res.addAll(multiple.getAllQuestions(quizId));
+            PictureResponseQuestionDAO picture = new PictureResponseQuestionDAO(myConn);
+            res.addAll(picture.getAllQuestions(quizId));
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     public List<Quiz> getCreatedQuizzes (long userId) {
