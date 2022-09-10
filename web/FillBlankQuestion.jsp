@@ -21,11 +21,9 @@
 
                                     <p class="text-center h3 mb-5 mx-1 mx-md-4 mt-4">Adding "Fill in the blank" Question: </p>
 
-                                    <p class=" h6 mb-2 mx-1 mx-md-4 mt-4"> Please enter your input in this format: </p>
-
-                                    <p class=" h6 mb-2 mx-1 mx-md-4"> part one blank(answer) part two </p>
-
                                     <p class=" h6 mb-3 mx-1 mx-md-4 mt-2"> Either parts one or two can be omitted, but not both.</p>
+
+                                    <h6 class="registration-error h6 mb-3 mx-1 mx-md-4 mt-2" style="color:darkred"><c:out value="${ErrorMessage}"/></h6>
 
 
                                     <div class="mx-1 mx-md-4">

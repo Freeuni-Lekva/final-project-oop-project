@@ -21,9 +21,9 @@
 
                                     <p class="text-center h3 mb-5 mx-1 mx-md-4 mt-4"> Adding Multiple Choice Question: </p>
 
-                                    <h6 class="registration-error" style="color:darkred"><c:out value="${ErrorMessage}"/></h6>
-
                                     <p class=" h6 mb-3 mx-1 mx-md-4 mt-2"> You may add up to 4 Answers, you may choose to omit the answers. </p>
+
+                                    <h6 class="registration-error h6 mb-3 mx-1 mx-md-4 mt-2" style="color:darkred"><c:out value="${ErrorMessage}"/></h6>
 
                                     <div class="mx-1 mx-md-4">
 
