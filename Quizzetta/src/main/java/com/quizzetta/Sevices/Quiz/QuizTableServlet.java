@@ -3,21 +3,17 @@ package com.quizzetta.Sevices.Quiz;
 import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Model.Quiz;
-import com.quizzetta.Model.TakenQuiz;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@WebServlet("") TODO
-public class  QuizTableServlet extends HttpServlet {
+public class QuizTableServlet extends HttpServlet {
 
     private static final int NUM_OF_QUIZZES_IN_CATEGORY = 5;
 
@@ -37,22 +33,35 @@ public class  QuizTableServlet extends HttpServlet {
         Connection conn = getConnection(req);
         QuizDAO quizDAO = getQuizDao(req);
         UserDAO userDAO = getUserDAO(req);
-        long userId = (long) req.getSession().getAttribute("userId");
 
         int numOfQuizzesInEachCategory = 10; // TODO WHERE SHOULD WE PUT IT
 
         List<Quiz> allQuizzes = quizDAO.getAllQuizzes();
 
-        List<Quiz> popularQuizzes = getPopularQuizzes(quizDAO);
+        List<Quiz> popularQuizzes = getPopularQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
         List<Quiz> recentQuizzes = getRecentlyCreatedQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
 
-        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(allQuizzes, userDAO.getQuizHistory(userId), NUM_OF_QUIZZES_IN_CATEGORY);
+//        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(userDAO.)
 
     }
 
-    private List<Quiz> getPopularQuizzes(QuizDAO quizDao) {
-        List<Quiz> result = quizDao.getMostPopularQuizzes();
-        if (result.size() > NUM_OF_QUIZZES_IN_CATEGORY) result.subList(NUM_OF_QUIZZES_IN_CATEGORY, result.size());
+    private List<Quiz> getPopularQuizzes(List<Quiz> allQuizzes, int numOfQuizzesInEachCategory) { // TODO REVIEW
+        List<Quiz> result = new ArrayList<>();
+
+        for (int i = 0; i < allQuizzes.size(); i++) {
+            for (int j = 0; j < result.size(); j++) {
+                if (allQuizzes.get(i).getNumberOfUses() > result.get(j).getNumberOfUses()) {
+                    result.add(j, allQuizzes.get(i));
+                } else if (result.size() < numOfQuizzesInEachCategory) {
+                    result.add(allQuizzes.get(i));
+                }
+            }
+        }
+
+        for (int i = result.size() - 1; i >= numOfQuizzesInEachCategory ; i--) {
+            result.remove(i);
+        }
+
         return result;
     }
 
@@ -76,7 +85,7 @@ public class  QuizTableServlet extends HttpServlet {
         return result;
     }
 
-    private List<Quiz> getRecentlyTakenQuizzes(List<Quiz> allQuizzes, List<TakenQuiz> recentQuizzes, int numOfQuizzesInEachCategory) {
+    private List<Quiz> getRecentlyTakenQuizzes(List<Quiz> allQuizzes, int numOfQuizzesInEachCategory) {
         List<Quiz> result = new ArrayList<>();
 
         for (Quiz allQuizz : allQuizzes) {
