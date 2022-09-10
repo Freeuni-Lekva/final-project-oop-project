@@ -18,27 +18,38 @@ public class NoteDAO {
     }
 
     public void addNote (Note note) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("INSERT INTO notes (note_text, from_id, to_id, sent_time)" +
-                                                        "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-        stm.setString(1, note.getNoteText());
-        stm.setLong(2, note.getFromUserId());
-        stm.setLong(3, note.getToUserId());
-        stm.setTimestamp(4, note.getSentTime());
-        stm.executeUpdate();
-        ResultSet res = stm.getGeneratedKeys();
-        res.next();
-        long noteId = res.getLong(1);
-        note.setId(noteId);
+        PreparedStatement stm;
+        try {
+            stm = myConn.prepareStatement("INSERT INTO notes (note_text, from_id, to_id, sent_time)" +
+                    "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, note.getNoteText());
+            stm.setLong(2, note.getFromUserId());
+            stm.setLong(3, note.getToUserId());
+            stm.setTimestamp(4, note.getSentTime());
+            stm.executeUpdate();
+            ResultSet res = stm.getGeneratedKeys();
+            res.next();
+            long noteId = res.getLong(1);
+            note.setId(noteId);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     public Note getNote (long noteId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM notes WHERE id = ?");
-        stm.setLong(1, noteId);
-        ResultSet res = stm.executeQuery();
-        res.next();
-        return new Note(res.getLong("id"), res.getString("note_text"),
-                        res.getLong("from_id"), res.getLong("to_id"),
-                        res.getTimestamp("sent_time"));
+        PreparedStatement stm;
+
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM notes WHERE id = ?");
+            stm.setLong(1, noteId);
+            ResultSet res = stm.executeQuery();
+            res.next();
+            return new Note(res.getLong("id"), res.getString("note_text"),
+                    res.getLong("from_id"), res.getLong("to_id"),
+                    res.getTimestamp("sent_time"));
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     public List<Note> getChat (long user1, long user2) throws SQLException {
@@ -56,9 +67,13 @@ public class NoteDAO {
         return chat;
     }
 
-    public void removeNote (long noteId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("DELETE FROM notes WHERE id = ?");
-        stm.setLong(1, noteId);
-        stm.executeUpdate();
+    public void removeNote (long noteId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("DELETE FROM notes WHERE id = ?");
+            stm.setLong(1, noteId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 }
