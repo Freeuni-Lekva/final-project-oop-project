@@ -43,15 +43,21 @@ public class QuizDAO {
         }
     }
 
-    public Quiz getQuiz (long quizId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE id = ?");
-        stm.setLong(1, quizId);
-        ResultSet res = stm.executeQuery();
-        res.next();
-        return new Quiz (res.getLong("id"), res.getString("title"),
-                         res.getLong("creator_id"), res.getBoolean("are_random_questions"),
-                         res.getBoolean("is_one_page"), res.getBoolean("is_immediate_feedback"),
-                         res.getBoolean("is_practice_mode"));
+    public Quiz getQuiz (long quizId) {
+        PreparedStatement stm;
+        try {
+            stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE id = ?");
+            stm.setLong(1, quizId);
+            ResultSet res = stm.executeQuery();
+            res.next();
+            return new Quiz(res.getLong("id"), res.getString("title"),
+                    res.getLong("creator_id"), res.getBoolean("are_random_questions"),
+                    res.getBoolean("is_one_page"), res.getBoolean("is_immediate_feedback"),
+                    res.getBoolean("is_practice_mode"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     public void removeQuiz (long quizId) throws SQLException {

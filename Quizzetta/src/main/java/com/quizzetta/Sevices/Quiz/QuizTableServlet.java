@@ -38,76 +38,39 @@ public class  QuizTableServlet extends HttpServlet {
         QuizDAO quizDAO = getQuizDao(req);
         UserDAO userDAO = getUserDAO(req);
         long userId = (long) req.getSession().getAttribute("userId");
-
-        int numOfQuizzesInEachCategory = 10; // TODO WHERE SHOULD WE PUT IT
-
-        List<Quiz> allQuizzes = quizDAO.getAllQuizzes();
-
-        List<Quiz> popularQuizzes = getPopularQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
-        List<Quiz> recentQuizzes = getRecentlyCreatedQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
-
-        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(allQuizzes, userDAO.getQuizHistory(userId), NUM_OF_QUIZZES_IN_CATEGORY);
+        List<Quiz> popularQuizzes = getPopularQuizzes(quizDAO);
+        List<Quiz> recentQuizzes = getRecentlyCreatedQuizzes(quizDAO);
+        List<Quiz> usersRecentQuizzes = getUsersRecentQuizzes(quizDAO, userId);
+        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(quizDAO, userDAO, userId);
 
     }
 
-    private List<Quiz> getPopularQuizzes(List<Quiz> allQuizzes, int numOfQuizzesInEachCategory) { // TODO REVIEW
-        List<Quiz> result = new ArrayList<>();
-
-        for (int i = 0; i < allQuizzes.size(); i++) {
-            for (int j = 0; j < result.size(); j++) {
-                if (allQuizzes.get(i).getNumberOfUses() > result.get(j).getNumberOfUses()) {
-                    result.add(j, allQuizzes.get(i));
-                } else if (result.size() < numOfQuizzesInEachCategory) {
-                    result.add(allQuizzes.get(i));
-                }
-            }
-        }
-
-        for (int i = result.size() - 1; i >= numOfQuizzesInEachCategory ; i--) {
-            result.remove(i);
-        }
-
+    private List<Quiz> getPopularQuizzes(QuizDAO quizDao) {
+        List<Quiz> result = quizDao.getMostPopularQuizzes();
+        if (result.size() > NUM_OF_QUIZZES_IN_CATEGORY) result.subList(NUM_OF_QUIZZES_IN_CATEGORY, result.size()).clear();
         return result;
     }
 
-    private List<Quiz> getRecentlyCreatedQuizzes(List<Quiz> allQuizzes, int numOfQuizzesInEachCategory) {
-        List<Quiz> result = new ArrayList<>();
-
-        for (Quiz allQuizz : allQuizzes) {
-            for (int j = 0; j < result.size(); j++) {
-                if (allQuizz.getCreationDate().getTime() > result.get(j).getCreationDate().getTime()) {
-                    result.add(j, allQuizz);
-                } else if (result.size() < numOfQuizzesInEachCategory) {
-                    result.add(allQuizz);
-                }
-            }
-        }
-
-        for (int i = result.size() - 1; i >= numOfQuizzesInEachCategory ; i--) {
-            result.remove(i);
-        }
-
+    private List<Quiz> getRecentlyCreatedQuizzes(QuizDAO quizDao) {
+        List<Quiz> result = quizDao.getRecentlyCreatedQuizzes();
+        if (result.size() > NUM_OF_QUIZZES_IN_CATEGORY) result.subList(NUM_OF_QUIZZES_IN_CATEGORY, result.size()).clear();
         return result;
     }
 
-    private List<Quiz> getRecentlyTakenQuizzes(List<Quiz> allQuizzes, List<TakenQuiz> recentQuizzes, int numOfQuizzesInEachCategory) {
-        List<Quiz> result = new ArrayList<>();
-
-        for (Quiz allQuizz : allQuizzes) {
-            for (int j = 0; j < result.size(); j++) {
-                if (allQuizz.getCreationDate().getTime() > result.get(j).getCreationDate().getTime()) {
-                    result.add(j, allQuizz);
-                } else if (result.size() < numOfQuizzesInEachCategory) {
-                    result.add(allQuizz);
-                }
-            }
-        }
-
-        for (int i = result.size() - 1; i >= numOfQuizzesInEachCategory ; i--) {
-            result.remove(i);
-        }
-
+    private List<Quiz> getUsersRecentQuizzes(QuizDAO quizDao, Long userId) {
+        List<Quiz> result = quizDao.getRecentlyCreatedQuizzes(userId);
+        if (result.size() > NUM_OF_QUIZZES_IN_CATEGORY) result.subList(NUM_OF_QUIZZES_IN_CATEGORY, result.size()).clear();
         return result;
     }
 
+    private List<Quiz> getRecentlyTakenQuizzes(QuizDAO quizDao, UserDAO userDao, long userId){
+        List<TakenQuiz> takenQuizzes = userDao.getRecentlyTakenQuizzes(userId);
+        List<Quiz> result = new ArrayList<>();
+        for (TakenQuiz currQuiz : takenQuizzes) {
+            long id = currQuiz.getQuizId();
+            result.add(quizDao.getQuiz(id));
+        }
+        if (result.size() > NUM_OF_QUIZZES_IN_CATEGORY) result.subList(NUM_OF_QUIZZES_IN_CATEGORY, result.size()).clear();
+        return result;
+    }
 }
