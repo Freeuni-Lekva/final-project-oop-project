@@ -3,6 +3,7 @@ package com.quizzetta.Sevices.Quiz;
 import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Model.Quiz;
+import com.quizzetta.Model.TakenQuiz;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,6 +36,7 @@ public class QuizTableServlet extends HttpServlet {
         Connection conn = getConnection(req);
         QuizDAO quizDAO = getQuizDao(req);
         UserDAO userDAO = getUserDAO(req);
+        long userId = (long) req.getSession().getAttribute("userId");
 
         int numOfQuizzesInEachCategory = 10; // TODO WHERE SHOULD WE PUT IT
 
@@ -43,7 +45,7 @@ public class QuizTableServlet extends HttpServlet {
         List<Quiz> popularQuizzes = getPopularQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
         List<Quiz> recentQuizzes = getRecentlyCreatedQuizzes(allQuizzes, NUM_OF_QUIZZES_IN_CATEGORY);
 
-//        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(userDAO.)
+        List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(allQuizzes, userDAO.getQuizHistory(userId), NUM_OF_QUIZZES_IN_CATEGORY);
 
     }
 
@@ -87,7 +89,7 @@ public class QuizTableServlet extends HttpServlet {
         return result;
     }
 
-    private List<Quiz> getRecentlyTakenQuizzes(List<Quiz> allQuizzes, int numOfQuizzesInEachCategory) {
+    private List<Quiz> getRecentlyTakenQuizzes(List<Quiz> allQuizzes, List<TakenQuiz> recentQuizzes, int numOfQuizzesInEachCategory) {
         List<Quiz> result = new ArrayList<>();
 
         for (Quiz allQuizz : allQuizzes) {
