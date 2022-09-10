@@ -21,6 +21,8 @@
 
                                     <p class="text-center h3 mb-5 mx-1 mx-md-4 mt-4">Adding Standard Question: </p>
 
+                                    <h6 class="registration-error h6 mb-3 mx-1 mx-md-4 mt-2" style="color:darkred"><c:out value="${ErrorMessage}"/></h6>
+
                                     <div class="mx-1 mx-md-4">
 
                                         <div class="d-flex flex-row align-items-center mb-4">
