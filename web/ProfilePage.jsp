@@ -8,8 +8,8 @@
         <div class="container-fluid">
             <!-- Brand -->
             <div>
-            <a class="h4 mb-0 mr-2 text-white text-uppercase d-none d-lg-inline-block" href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">Homepage</a>
-            <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">User profile</a>
+                <a class="h4 mb-0 mr-2 text-white text-uppercase d-none d-lg-inline-block" href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">Homepage</a>
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">User profile</a>
             </div>
             <!-- User -->
             <ul class="navbar-nav align-items-center d-none d-md-flex">
