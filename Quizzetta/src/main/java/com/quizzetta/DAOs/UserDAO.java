@@ -21,21 +21,21 @@ public class UserDAO {
     public void addUser(User user) {
         PreparedStatement stm = null;
         try {
-            stm = myConn.prepareStatement("INSERT INTO userTable (email, username, password_hash," +
-                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?, ?)",
+            stm = myConn.prepareStatement("INSERT INTO userTable (username, password_hash," +
+                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            stm.setString(1, user.getEmail());
-            stm.setString(2, user.getUsername());
-            stm.setString(3, user.getPasswordHash());
-            stm.setString(4, user.getFirstName());
-            stm.setString(5, user.getLastName());
-            stm.setBoolean(6, user.isAdmin());
+            stm.setString(1, user.getUsername());
+            stm.setString(2, user.getPasswordHash());
+            stm.setString(3, user.getFirstName());
+            stm.setString(4, user.getLastName());
+            stm.setBoolean(5, user.isAdmin());
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
             long userId = res.getLong(1);
             user.setId(userId);
             System.out.println("NOT SQL EXCEPTION");
+
         } catch (SQLException e) {
             System.out.println("SQL EXCEPTION");
             e.printStackTrace();
@@ -49,19 +49,23 @@ public class UserDAO {
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         res.next();
-        return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
+        return new User(res.getLong("id"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
     public User getUser(String userName) throws SQLException {
+
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
         stm.setString(1, userName);
         ResultSet res = stm.executeQuery();
+
         res.next();
-        return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
+        return new User(res.getLong("id"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"));
+
+
     }
 
     public void removeUser(long userId) throws SQLException {
@@ -121,28 +125,9 @@ public class UserDAO {
 
     public List<TakenQuiz> getQuizHistory(long userId) {
         PreparedStatement stm;
+
         try {
             stm = myConn.prepareStatement("SELECT * FROM userHistory WHERE user_id = ?");
-            stm.setLong(1, userId);
-            ResultSet res = stm.executeQuery();
-            List<TakenQuiz> takenQuizzes = new ArrayList<>();
-            while (res.next()) {
-                TakenQuiz currQuiz = new TakenQuiz(res.getLong("user_id"), res.getLong("quiz_id"),
-                        res.getDouble("user_score"),
-                        res.getTimestamp("quiz_start_time"),
-                        res.getTimestamp("quiz_end_time"));
-                takenQuizzes.add(currQuiz);
-            }
-            return takenQuizzes;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-    }
-
-    public List<TakenQuiz> getRecentlyTakenQuizzes(long userId) {
-        try {
-            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userHistory WHERE user_id = ? ORDER BY quiz_end_time DESC");
             stm.setLong(1, userId);
             ResultSet res = stm.executeQuery();
             List<TakenQuiz> takenQuizzes = new ArrayList<>();
