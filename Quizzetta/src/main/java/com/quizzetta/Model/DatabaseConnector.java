@@ -14,7 +14,7 @@ public class DatabaseConnector {
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         String dbName = "quiz_db";
         String sqlUsername = "root";
-        String sqlPassword = "123456789OOp!";
+        String sqlPassword = "rootroot";
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, sqlUsername, sqlPassword);}
 

@@ -21,15 +21,18 @@ public class QuizDAO {
     public void addQuiz (Quiz quiz) {
         try {
             PreparedStatement stm = myConn.prepareStatement("INSERT INTO quizzes (title, creator_id, " +
+                            "creation_time, number_of_takes, " +
                             "are_random_questions, is_one_page, is_immediate_feedback, " +
-                            "is_practice_mode) VALUES (?, ?, ?, ?, ?, ?)",
+                            "is_practice_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, quiz.getTitle());
             stm.setLong(2, quiz.getCreatorUserId());
-            stm.setBoolean(3, quiz.isRandomQuestions());
-            stm.setBoolean(4, quiz.isOnePage());
-            stm.setBoolean(5, quiz.isImmediateFeedback());
-            stm.setBoolean(6, quiz.isPracticeMode());
+            stm.setTimestamp(3, quiz.getCreationDate());
+            stm.setInt(4, quiz.getNumberOfUses());
+            stm.setBoolean(5, quiz.isRandomQuestions());
+            stm.setBoolean(6, quiz.isOnePage());
+            stm.setBoolean(7, quiz.isImmediateFeedback());
+            stm.setBoolean(8, quiz.isPracticeMode());
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
@@ -69,37 +72,25 @@ public class QuizDAO {
         return res;
     }
 
-    public List<Quiz> getCreatedQuizzes (long userId) throws SQLException {
-        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
-        stm.setLong(1, userId);
-        ResultSet res = stm.executeQuery();
-        List<Quiz> createdQuizzes = new ArrayList<>();
-        while (res.next()) {
-            createdQuizzes.add(getQuiz(res.getLong("id")));
-        }
-        return createdQuizzes;
-    }
-
-    public List<Quiz> getAllQuizzes() {
+    public List<Quiz> getCreatedQuizzes (long userId) {
+        PreparedStatement stm;
         try {
-            PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id ASC");
+            stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ? ORDER BY id ASC");
+            stm.setLong(1, userId);
             ResultSet res = stm.executeQuery();
-            List<Quiz> allQuizzes = new ArrayList<>();
+            List<Quiz> createdQuizzes = new ArrayList<>();
             while (res.next()) {
-                allQuizzes.add(getQuiz(res.getLong("id")));
+                createdQuizzes.add(getQuiz(res.getLong("id")));
             }
-            return allQuizzes;
+            return createdQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
         }
     }
 
-    public List<Quiz> getAllQuizzesOfAnAuthor(long author_id) {
-        PreparedStatement stm;
-
+    public List<Quiz> getAllQuizzes() {
         try {
-            stm = myConn.prepareStatement("SELECT  * FROM  quizzes WHERE author_id = ? ORDER BY id ASC");
-            stm.setLong(1, author_id);
+            PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id ASC");
             ResultSet res = stm.executeQuery();
             List<Quiz> allQuizzes = new ArrayList<>();
             while (res.next()) {
