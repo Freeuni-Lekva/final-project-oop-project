@@ -37,7 +37,7 @@ CREATE TABLE userTable (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     is_admin BOOLEAN NOT NULL,
-    url VARCHAR(1000) NOT NULL
+    url VARCHAR(1000)
 );
 
 CREATE TABLE friendRequests (
