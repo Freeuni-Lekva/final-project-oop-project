@@ -10,30 +10,7 @@ public class User {
     private String firstName;
     private String lastName;
     private boolean isAdmin;
-
-    private String imageUrl;
     private List<User> friends;
-
-    public User(long id, String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin, String imageUrl) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isAdmin = isAdmin;
-        this.imageUrl = imageUrl;
-    }
-
-    public User(String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin, String imageUrl) {
-        this.email = email;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isAdmin = isAdmin;
-        this.imageUrl = imageUrl;
-    }
 
     public User(long id, String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
         this.id = id;
@@ -43,7 +20,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isAdmin = isAdmin;
-        this.imageUrl = null;
     }
 
     public User(String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
@@ -53,7 +29,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isAdmin = isAdmin;
-        this.imageUrl = null;
     }
 
     public long getId() {
@@ -111,10 +86,6 @@ public class User {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
-
-    public String getImageUrl() { return imageUrl; }
-
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public List<User> getFriends() {
         return friends;

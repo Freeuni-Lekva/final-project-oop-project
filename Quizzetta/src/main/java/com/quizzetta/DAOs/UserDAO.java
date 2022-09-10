@@ -22,7 +22,7 @@ public class UserDAO {
         PreparedStatement stm = null;
         try {
             stm = myConn.prepareStatement("INSERT INTO userTable (email, username, password_hash," +
-                            " first_name, last_name, is_admin, url) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                            " first_name, last_name, is_admin) VALUES (?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
             stm.setString(1, user.getEmail());
             stm.setString(2, user.getUsername());
@@ -30,7 +30,6 @@ public class UserDAO {
             stm.setString(4, user.getFirstName());
             stm.setString(5, user.getLastName());
             stm.setBoolean(6, user.isAdmin());
-            stm.setString(7, user.getImageUrl());
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
             res.next();
@@ -52,7 +51,7 @@ public class UserDAO {
         res.next();
         return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
-                res.getString("last_name"), res.getBoolean("is_admin"), res.getString("url"));
+                res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
     public User getUser(String userName) throws SQLException {
@@ -62,7 +61,7 @@ public class UserDAO {
         res.next();
         return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
-                res.getString("last_name"), res.getBoolean("is_admin"), res.getString("url"));
+                res.getString("last_name"), res.getBoolean("is_admin"));
     }
 
     public void removeUser(long userId) throws SQLException {
