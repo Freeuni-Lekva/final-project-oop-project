@@ -41,95 +41,52 @@ public class QuizDAO {
     }
 
     public Quiz getQuiz (long quizId) throws SQLException {
-        PreparedStatement stm;
-
-        try {
-            stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE id = ?");
-            stm.setLong(1, quizId);
-            ResultSet res = stm.executeQuery();
-            res.next();
-            return new Quiz(res.getLong("id"), res.getString("title"),
-                    res.getLong("creator_id"), res.getBoolean("are_random_questions"),
-                    res.getBoolean("is_one_page"), res.getBoolean("is_immediate_feedback"),
-                    res.getBoolean("is_practice_mode"));
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE id = ?");
+        stm.setLong(1, quizId);
+        ResultSet res = stm.executeQuery();
+        res.next();
+        return new Quiz (res.getLong("id"), res.getString("title"),
+                         res.getLong("creator_id"), res.getBoolean("are_random_questions"),
+                         res.getBoolean("is_one_page"), res.getBoolean("is_immediate_feedback"),
+                         res.getBoolean("is_practice_mode"));
     }
 
-    public void removeQuiz (long quizId) {
-        PreparedStatement stm;
-
-        try {
-            stm = myConn.prepareStatement("DELETE FROM quizzes WHERE id = ?");
-            stm.setLong(1, quizId);
-            stm.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
+    public void removeQuiz (long quizId) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("DELETE FROM quizzes WHERE id = ?");
+        stm.setLong(1, quizId);
+        stm.executeUpdate();
     }
 
     public List<Question> getQuizQuestions (long quizId) throws SQLException {
-        List<Question> res = new ArrayList<>();
-
         StandardTextQuestionDAO standard = new StandardTextQuestionDAO(myConn);
+        List<Question> res = new ArrayList<>(standard.getAllQuestions(quizId));
         FillTheBlankQuestionDAO fillBlank = new FillTheBlankQuestionDAO(myConn);
-        MultipleChoiceQuestionDAO multiple = new MultipleChoiceQuestionDAO(myConn);
-        PictureResponseQuestionDAO picture = new PictureResponseQuestionDAO(myConn);
-
-        res.addAll(standard.getAllQuestions(quizId));
         res.addAll(fillBlank.getAllQuestions(quizId));
+        MultipleChoiceQuestionDAO multiple = new MultipleChoiceQuestionDAO(myConn);
         res.addAll(multiple.getAllQuestions(quizId));
+        PictureResponseQuestionDAO picture = new PictureResponseQuestionDAO(myConn);
         res.addAll(picture.getAllQuestions(quizId));
-
         return res;
-
     }
 
-    public List<Quiz> getCreatedQuizzes (long userId) {
-        try {
-            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
-            stm.setLong(1, userId);
-            ResultSet res = stm.executeQuery();
-            List<Quiz> createdQuizzes = new ArrayList<>();
-            while (res.next()) {
-                createdQuizzes.add(getQuiz(res.getLong("id")));
-            }
-            return createdQuizzes;
-        } catch (SQLException e) {
-            throw new RuntimeException();
+    public List<Quiz> getCreatedQuizzes (long userId) throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ?");
+        stm.setLong(1, userId);
+        ResultSet res = stm.executeQuery();
+        List<Quiz> createdQuizzes = new ArrayList<>();
+        while (res.next()) {
+            createdQuizzes.add(getQuiz(res.getLong("id")));
         }
+        return createdQuizzes;
     }
 
-    public List<Quiz> getAllQuizzes() {
-        try {
-            PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id ASC");
-            ResultSet res = stm.executeQuery();
-            List<Quiz> allQuizzes = new ArrayList<>();
-            while (res.next()) {
-                allQuizzes.add(getQuiz(res.getLong("id")));
-            }
-            return allQuizzes;
-        } catch (SQLException e) {
-            throw new RuntimeException();
+    public List<Quiz> getAllQuizzes() throws SQLException {
+        PreparedStatement stm = myConn.prepareStatement("SELECT  * FROM  quizzes ORDER BY id ASC");
+        ResultSet res = stm.executeQuery();
+        List<Quiz> allQuizzes = new ArrayList<>();
+        while (res.next()) {
+            allQuizzes.add(getQuiz(res.getLong("id")));
         }
+        return allQuizzes;
     }
-
-    public List<Quiz> getAllQuizzesOfAnAuthor(long author_id) {
-        PreparedStatement stm;
-
-        try {
-            stm = myConn.prepareStatement("SELECT  * FROM  quizzes WHERE author_id = ? ORDER BY id ASC");
-            stm.setLong(1, author_id);
-            ResultSet res = stm.executeQuery();
-            List<Quiz> allQuizzes = new ArrayList<>();
-            while (res.next()) {
-                allQuizzes.add(getQuiz(res.getLong("id")));
-            }
-            return allQuizzes;
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-    }
-
 }
