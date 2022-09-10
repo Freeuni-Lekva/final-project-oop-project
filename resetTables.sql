@@ -1,4 +1,4 @@
-CREATE  DATABASE QUIZ_DB;
+CREATE OR REPLACE DATABASE QUIZ_DB;
 USE QUIZ_DB;
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -30,195 +30,202 @@ DROP TABLE IF EXISTS userHistory;
 SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE userTable (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(300) NOT NULL,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    is_admin BOOLEAN NOT NULL
+                           id INT PRIMARY KEY AUTO_INCREMENT,
+                           email VARCHAR(200) UNIQUE NOT NULL,
+                           username VARCHAR(100) UNIQUE NOT NULL,
+                           password_hash VARCHAR(300) NOT NULL,
+                           first_name VARCHAR(50) NOT NULL,
+                           last_name VARCHAR(50) NOT NULL,
+                           is_admin BOOLEAN NOT NULL
 );
 
 CREATE TABLE friendRequests (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    from_id INT NOT NULL,
-    to_id INT NOT NULL,
-    FOREIGN KEY (from_id) REFERENCES userTable(id) ON DELETE CASCADE,
-    FOREIGN KEY (to_id) REFERENCES userTable(id) ON DELETE CASCADE
+                                id INT PRIMARY KEY AUTO_INCREMENT,
+                                from_id INT NOT NULL,
+                                to_id INT NOT NULL,
+                                FOREIGN KEY (from_id) REFERENCES userTable(id) ON DELETE CASCADE,
+                                FOREIGN KEY (to_id) REFERENCES userTable(id) ON DELETE CASCADE
 );
 
 CREATE TABLE friends (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    first_user_id INT NOT NULL REFERENCES userTable(id) ON DELETE CASCADE,
-    second_user_id INT NOT NULL REFERENCES userTable(id) ON DELETE CASCADE
+                         id INT PRIMARY KEY AUTO_INCREMENT,
+                         first_user_id INT NOT NULL REFERENCES userTable(id) ON DELETE CASCADE,
+                         second_user_id INT NOT NULL REFERENCES userTable(id) ON DELETE CASCADE
 );
 
 CREATE TABLE notes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    note_text VARCHAR(1000) NOT NULL,
-    from_id INT NOT NULL,
-    to_id INT NOT NULL,
-    sent_time TIMESTAMP NOT NULL,
-    FOREIGN KEY (from_id) REFERENCES userTable(id) ON DELETE CASCADE,
-    FOREIGN KEY (to_id) REFERENCES userTable(id) ON DELETE CASCADE
+                       id INT PRIMARY KEY AUTO_INCREMENT,
+                       note_text VARCHAR(1000) NOT NULL,
+                       from_id INT NOT NULL,
+                       to_id INT NOT NULL,
+                       sent_time TIMESTAMP NOT NULL,
+                       FOREIGN KEY (from_id) REFERENCES userTable(id) ON DELETE CASCADE,
+                       FOREIGN KEY (to_id) REFERENCES userTable(id) ON DELETE CASCADE
 );
 
 CREATE TABLE quizzes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    creator_id INT NOT NULL,
-    are_random_questions BOOLEAN NOT NULL,
-    is_one_page BOOLEAN NOT NULL,
-    is_immediate_feedback BOOLEAN NOT NULL,
-    is_practice_mode BOOLEAN NOT NULL,
-    FOREIGN KEY (creator_id) REFERENCES userTable(id) ON DELETE CASCADE
+                         id INT PRIMARY KEY AUTO_INCREMENT,
+                         title VARCHAR(100) NOT NULL,
+                         creator_id INT NOT NULL,
+                         creation_time TIMESTAMP NOT NULL,
+                         number_of_takes INT NOT NULL,
+                         are_random_questions BOOLEAN NOT NULL,
+                         is_one_page BOOLEAN NOT NULL,
+                         is_immediate_feedback BOOLEAN NOT NULL,
+                         is_practice_mode BOOLEAN NOT NULL,
+                         FOREIGN KEY (creator_id) REFERENCES userTable(id) ON DELETE CASCADE
 );
 
 CREATE TABLE standardTextQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                       id INT PRIMARY KEY AUTO_INCREMENT,
+                                       question_text VARCHAR(1000) NOT NULL,
+                                       quiz_id INT NOT NULL,
+                                       FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE standardTextAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES standardTextQuestions (id) ON DELETE CASCADE
+                                     id INT PRIMARY KEY AUTO_INCREMENT,
+                                     answer_text VARCHAR(1000) NOT NULL,
+                                     question_id INT NOT NULL,
+                                     FOREIGN KEY (question_id) REFERENCES standardTextQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE fillTheBlankQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                       id INT PRIMARY KEY AUTO_INCREMENT,
+                                       question_text VARCHAR(1000) NOT NULL,
+                                       quiz_id INT NOT NULL,
+                                       FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE fillTheBlankAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(500) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES fillTheBlankQuestions (id) ON DELETE CASCADE
+                                     id INT PRIMARY KEY AUTO_INCREMENT,
+                                     answer_text VARCHAR(500) NOT NULL,
+                                     question_id INT NOT NULL,
+                                     FOREIGN KEY (question_id) REFERENCES fillTheBlankQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multipleChoiceQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    num_of_answers INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                         id INT PRIMARY KEY AUTO_INCREMENT,
+                                         question_text VARCHAR(1000) NOT NULL,
+                                         quiz_id INT NOT NULL,
+                                         num_of_answers INT NOT NULL,
+                                         FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multipleChoiceAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    is_correct BOOLEAN NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES multipleChoiceQuestions (id) ON DELETE CASCADE
+                                       id INT PRIMARY KEY AUTO_INCREMENT,
+                                       answer_text VARCHAR(1000) NOT NULL,
+                                       question_id INT NOT NULL,
+                                       is_correct BOOLEAN NOT NULL,
+                                       FOREIGN KEY (question_id) REFERENCES multipleChoiceQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE pictureResponseQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    url VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                          id INT PRIMARY KEY AUTO_INCREMENT,
+                                          question_text VARCHAR(1000) NOT NULL,
+                                          url VARCHAR(1000) NOT NULL,
+                                          quiz_id INT NOT NULL,
+                                          FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE pictureResponseAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES pictureResponseQuestions (id) ON DELETE CASCADE
+                                        id INT PRIMARY KEY AUTO_INCREMENT,
+                                        answer_text VARCHAR(1000) NOT NULL,
+                                        question_id INT NOT NULL,
+                                        FOREIGN KEY (question_id) REFERENCES pictureResponseQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multiAnswerQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    numberOfAnswers INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                      id INT PRIMARY KEY AUTO_INCREMENT,
+                                      question_text VARCHAR(1000) NOT NULL,
+                                      quiz_id INT NOT NULL,
+                                      numberOfAnswers INT NOT NULL,
+                                      FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multiAnswerQuestionAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES multiAnswerQuestions (id) ON DELETE CASCADE
+                                            id INT PRIMARY KEY AUTO_INCREMENT,
+                                            answer_text VARCHAR(1000) NOT NULL,
+                                            question_id INT NOT NULL,
+                                            FOREIGN KEY (question_id) REFERENCES multiAnswerQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multipleChoiceWithMultipleAnswersQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                                            id INT PRIMARY KEY AUTO_INCREMENT,
+                                                            question_text VARCHAR(1000) NOT NULL,
+                                                            quiz_id INT NOT NULL,
+                                                            FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE multipleChoiceWithMultipleAnswersQuestionAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES multipleChoiceWithMultipleAnswersQuestions (id) ON DELETE CASCADE
+                                                                  id INT PRIMARY KEY AUTO_INCREMENT,
+                                                                  answer_text VARCHAR(1000) NOT NULL,
+                                                                  question_id INT NOT NULL,
+                                                                  FOREIGN KEY (question_id) REFERENCES multipleChoiceWithMultipleAnswersQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE matchingQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                   id INT PRIMARY KEY AUTO_INCREMENT,
+                                   question_text VARCHAR(1000) NOT NULL,
+                                   quiz_id INT NOT NULL,
+                                   FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE matchingQuestionAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    first_pair VARCHAR(1000) NOT NULL,
-    second_pair VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES matchingQuestions (id) ON DELETE CASCADE
+                                         id INT PRIMARY KEY AUTO_INCREMENT,
+                                         first_pair VARCHAR(1000) NOT NULL,
+                                         second_pair VARCHAR(1000) NOT NULL,
+                                         question_id INT NOT NULL,
+                                         FOREIGN KEY (question_id) REFERENCES matchingQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE autoGeneratedQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                        id INT PRIMARY KEY AUTO_INCREMENT,
+                                        question_text VARCHAR(1000) NOT NULL,
+                                        quiz_id INT NOT NULL,
+                                        FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE autoGeneratedQuestionAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES autoGeneratedQuestions (id) ON DELETE CASCADE
+                                              id INT PRIMARY KEY AUTO_INCREMENT,
+                                              answer_text VARCHAR(1000) NOT NULL,
+                                              question_id INT NOT NULL,
+                                              FOREIGN KEY (question_id) REFERENCES autoGeneratedQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE gradedQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                 id INT PRIMARY KEY AUTO_INCREMENT,
+                                 question_text VARCHAR(1000) NOT NULL,
+                                 quiz_id INT NOT NULL,
+                                 FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE timedQuestions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    question_text VARCHAR(1000) NOT NULL,
-    quiz_id INT NOT NULL,
-    duration_in_seconds INT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                                id INT PRIMARY KEY AUTO_INCREMENT,
+                                question_text VARCHAR(1000) NOT NULL,
+                                quiz_id INT NOT NULL,
+                                duration_in_seconds INT NOT NULL,
+                                FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
 
 CREATE TABLE timedQuestionAnswers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    answer_text VARCHAR(1000) NOT NULL,
-    question_id INT NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES timedQuestions (id) ON DELETE CASCADE
+                                      id INT PRIMARY KEY AUTO_INCREMENT,
+                                      answer_text VARCHAR(1000) NOT NULL,
+                                      question_id INT NOT NULL,
+                                      FOREIGN KEY (question_id) REFERENCES timedQuestions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE userHistory (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    quiz_id INT NOT NULL,
-    user_score DOUBLE NOT NULL,
-    quiz_start_time TIMESTAMP NOT NULL,
-    quiz_end_time TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES userTable (id) ON DELETE CASCADE,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
+                             id INT PRIMARY KEY AUTO_INCREMENT,
+                             user_id INT NOT NULL,
+                             quiz_id INT NOT NULL,
+                             user_score DOUBLE NOT NULL,
+                             quiz_start_time TIMESTAMP NOT NULL,
+                             quiz_end_time TIMESTAMP NOT NULL,
+                             FOREIGN KEY (user_id) REFERENCES userTable (id) ON DELETE CASCADE,
+                             FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
+
+#for testing purposes
+#INSERT INTO userTable VALUES(1, "Khabju", "asd", "Temur", "Barkaia", TRUE);
+#INSERT INTO userTable VALUES(2, "Temo", "assd", "Temuka", "Barkaia", TRUE);
