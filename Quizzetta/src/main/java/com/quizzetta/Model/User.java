@@ -35,6 +35,27 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
+    public User(long id, String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isAdmin = isAdmin;
+        this.imageUrl = null;
+    }
+
+    public User(String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isAdmin = isAdmin;
+        this.imageUrl = null;
+    }
+
     public long getId() {
         return id;
     }
