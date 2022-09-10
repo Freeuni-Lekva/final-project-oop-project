@@ -73,9 +73,8 @@ public class QuizDAO {
     }
 
     public List<Quiz> getCreatedQuizzes (long userId) {
-        PreparedStatement stm;
         try {
-            stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ? ORDER BY id ASC");
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ? ORDER BY id ASC");
             stm.setLong(1, userId);
             ResultSet res = stm.executeQuery();
             List<Quiz> createdQuizzes = new ArrayList<>();
@@ -83,6 +82,49 @@ public class QuizDAO {
                 createdQuizzes.add(getQuiz(res.getLong("id")));
             }
             return createdQuizzes;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public List<Quiz> getRecentlyCreatedQuizzes (long userId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes WHERE creator_id = ? ORDER BY creation_time DESC");
+            stm.setLong(1, userId);
+            ResultSet res = stm.executeQuery();
+            List<Quiz> recentlyCreatedQuizzes = new ArrayList<>();
+            while (res.next()) {
+                recentlyCreatedQuizzes.add(getQuiz(res.getLong("id")));
+            }
+            return recentlyCreatedQuizzes;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public List<Quiz> getRecentlyCreatedQuizzes () {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes ORDER BY creation_time DESC");
+            ResultSet res = stm.executeQuery();
+            List<Quiz> recentlyCreatedQuizzes = new ArrayList<>();
+            while (res.next()) {
+                recentlyCreatedQuizzes.add(getQuiz(res.getLong("id")));
+            }
+            return recentlyCreatedQuizzes;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public List<Quiz> getMostPopularQuizzes () {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM quizzes ORDER BY number_of_takes DESC");
+            ResultSet res = stm.executeQuery();
+            List<Quiz> mostPopularQuizzes = new ArrayList<>();
+            while (res.next()) {
+                mostPopularQuizzes.add(getQuiz(res.getLong("id")));
+            }
+            return mostPopularQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
         }

@@ -36,7 +36,6 @@ public class UserDAO {
             long userId = res.getLong(1);
             user.setId(userId);
             System.out.println("NOT SQL EXCEPTION");
-
         } catch (SQLException e) {
             System.out.println("SQL EXCEPTION");
             e.printStackTrace();
@@ -56,17 +55,13 @@ public class UserDAO {
     }
 
     public User getUser(String userName) throws SQLException {
-
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userTable WHERE username = ?");
         stm.setString(1, userName);
         ResultSet res = stm.executeQuery();
-
         res.next();
         return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"));
-
-
     }
 
     public void removeUser(long userId) throws SQLException {
@@ -126,9 +121,28 @@ public class UserDAO {
 
     public List<TakenQuiz> getQuizHistory(long userId) {
         PreparedStatement stm;
-
         try {
             stm = myConn.prepareStatement("SELECT * FROM userHistory WHERE user_id = ?");
+            stm.setLong(1, userId);
+            ResultSet res = stm.executeQuery();
+            List<TakenQuiz> takenQuizzes = new ArrayList<>();
+            while (res.next()) {
+                TakenQuiz currQuiz = new TakenQuiz(res.getLong("user_id"), res.getLong("quiz_id"),
+                        res.getDouble("user_score"),
+                        res.getTimestamp("quiz_start_time"),
+                        res.getTimestamp("quiz_end_time"));
+                takenQuizzes.add(currQuiz);
+            }
+            return takenQuizzes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    public List<TakenQuiz> getRecentlyTakenQuizzes(long userId) {
+        try {
+            PreparedStatement stm = myConn.prepareStatement("SELECT * FROM userHistory WHERE user_id = ? ORDER BY quiz_end_time DESC");
             stm.setLong(1, userId);
             ResultSet res = stm.executeQuery();
             List<TakenQuiz> takenQuizzes = new ArrayList<>();
