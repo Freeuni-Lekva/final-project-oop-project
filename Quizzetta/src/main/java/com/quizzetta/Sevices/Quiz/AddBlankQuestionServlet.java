@@ -1,10 +1,14 @@
 package com.quizzetta.Sevices.Quiz;
 
+import com.quizzetta.DAOs.FillTheBlankQuestionDAO;
 import com.quizzetta.DAOs.StandardTextQuestionDAO;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.HelperClasses.HideText;
 import com.quizzetta.Model.Answer;
 import com.quizzetta.Model.Question;
 import com.quizzetta.Model.Quiz;
+import com.quizzetta.Validator.BlankQuestionValidator;
+import com.quizzetta.Validator.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/AddBlankQuestion")
 public class AddBlankQuestionServlet extends HttpServlet {
@@ -32,7 +37,21 @@ public class AddBlankQuestionServlet extends HttpServlet {
 
         Quiz quiz = (Quiz) req.getSession().getAttribute("quiz");
         Long quizId = quiz.getId();
-        StandardTextQuestionDAO questionDAO = (StandardTextQuestionDAO) req.getServletContext().getAttribute("StandardTextQuestionDAO");
+        FillTheBlankQuestionDAO questionDAO = (FillTheBlankQuestionDAO) req.getServletContext().getAttribute("FillTheBlankQuestionDAO");
+
+        BlankQuestionValidator validator = new BlankQuestionValidator(questionPartOne, answerInput, questionPartTwo);
+
+        if (!validator.validate()) {
+            List<ValidationError> errors = validator.getErrors();
+            req.setAttribute("ErrorMessage", errors.get(0).getErrorMessage());
+            req.getRequestDispatcher("FillBlankQuestion.jsp").forward(req, resp);
+            return;
+        }
+
+
+
+
+
 
         String hiddenAnswer = HideText.Hide(answerInput, '_');
         String questionText = questionPartOne + " " + hiddenAnswer + " " + questionPartTwo;
@@ -43,7 +62,7 @@ public class AddBlankQuestionServlet extends HttpServlet {
         questionDAO.addQuestion(question, quizId);
 
         Answer answer = new Answer(answerInput, question.getId(), true);
-        questionDAO.addAnswer(answer);
+        questionDAO.addAnswer(answer, question.getId());
 
         req.getSession().setAttribute("questionCount", (int) req.getSession().getAttribute("questionCount") + 1);
         System.out.println("QUESTION COUNT:" + req.getSession().getAttribute("questionCount"));

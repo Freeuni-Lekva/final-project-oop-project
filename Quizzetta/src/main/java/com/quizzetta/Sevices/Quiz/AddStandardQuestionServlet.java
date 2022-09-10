@@ -1,7 +1,9 @@
 package com.quizzetta.Sevices.Quiz;
 
 import com.quizzetta.DAOs.StandardTextQuestionDAO;
+import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.*;
+import com.quizzetta.Validator.StandardQuestionValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/AddStandardQuestion")
 public class AddStandardQuestionServlet extends HttpServlet {
@@ -27,17 +30,24 @@ public class AddStandardQuestionServlet extends HttpServlet {
         System.out.println(questionInput);
         System.out.println(answerInput);
 
+
+        StandardQuestionValidator validator = new StandardQuestionValidator(questionInput, answerInput);
+
+        if (!validator.validate()) {
+            List<ValidationError> errors = validator.getErrors();
+            req.setAttribute("ErrorMessage", errors.get(0).getErrorMessage());
+            req.getRequestDispatcher("ResponseQuestion.jsp").forward(req, resp);
+            return;
+        }
+
+
         Quiz quiz = (Quiz) req.getSession().getAttribute("quiz");
-//        Quiz quiz =  req.getServletContext().getAttribute("quizDAO")
         Long quizId = quiz.getId();
 
-//        StandardTextQuestionDAO1 questionDAO = (StandardTextQuestionDAO1) req.getServletContext().getAttribute("StandardTextQuestionDAO1");
-//        StandardAnswer1 answer1 = new StandardAnswer1(answerInput);
-//        StandardQuestion1 question1 = new StandardQuestion1(questionInput, answer1, quizId);
-//
-//        questionDAO.addQuestion(question1);
+
 
         StandardTextQuestionDAO questionDAO = (StandardTextQuestionDAO) req.getServletContext().getAttribute("StandardTextQuestionDAO");
+
 
         Question question = new Question(questionInput, quizId, null, 1);
         questionDAO.addQuestion(question, quizId);
