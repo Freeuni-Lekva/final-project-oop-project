@@ -1,5 +1,3 @@
-package com.quizzetta.Tests;
-
 import com.quizzetta.DAOs.FriendRequestDAO;
 import com.quizzetta.Model.DatabaseConnector;
 import com.quizzetta.Model.FriendRequest;

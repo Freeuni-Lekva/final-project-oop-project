@@ -1,4 +1,4 @@
-CREATE  DATABASE QUIZ_DB;
+
 USE QUIZ_DB;
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -31,6 +31,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE userTable (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(200) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(300) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
@@ -66,6 +67,8 @@ CREATE TABLE quizzes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     creator_id INT NOT NULL,
+    creation_time TIMESTAMP NOT NULL,
+    number_of_takes INT NOT NULL,
     are_random_questions BOOLEAN NOT NULL,
     is_one_page BOOLEAN NOT NULL,
     is_immediate_feedback BOOLEAN NOT NULL,
@@ -222,3 +225,7 @@ CREATE TABLE userHistory (
     FOREIGN KEY (user_id) REFERENCES userTable (id) ON DELETE CASCADE,
     FOREIGN KEY (quiz_id) REFERENCES quizzes (id) ON DELETE CASCADE
 );
+
+#for testing purposes
+#INSERT INTO userTable VALUES(1, "mail1", "Khabju", "asd", "Temur", "Barkaia", TRUE);
+#INSERT INTO userTable VALUES(2, "mail2", "Temo", "assd", "Temuka", "Barkaia", TRUE);

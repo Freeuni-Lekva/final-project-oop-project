@@ -4,6 +4,7 @@ import java.util.List;
 
 public class User {
     private long id;
+    private String email;
     private String username;
     private String passwordHash;
     private String firstName;
@@ -11,8 +12,9 @@ public class User {
     private boolean isAdmin;
     private List<User> friends;
 
-    public User(long id, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+    public User(long id, String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
         this.id = id;
+        this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -20,7 +22,8 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
-    public User(String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+    public User(String email, String username, String passwordHash, String firstName, String lastName, boolean isAdmin) {
+        this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -34,6 +37,14 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {

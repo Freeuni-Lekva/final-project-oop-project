@@ -46,7 +46,7 @@ public class CreateQuizServlet extends HttpServlet {
         System.out.println(isPracticeMode);
 
         QuizDAO quizDAO = (QuizDAO) req.getServletContext().getAttribute("QuizDAO");
-        Quiz quiz = new Quiz(name, 10L, isRandomizedOrder, isOnePage, immediateFeedback, isPracticeMode);
+        Quiz quiz = new Quiz(name, (long) req.getSession().getAttribute("userId"), isRandomizedOrder, isOnePage, immediateFeedback, isPracticeMode);
         QuizValidator quizValidator = new QuizValidator(questionCount);
 
         if (!quizValidator.validate()) {
@@ -61,6 +61,7 @@ public class CreateQuizServlet extends HttpServlet {
         req.getSession().setAttribute("quiz", quiz);
         req.getSession().setAttribute("questionCount", 0);
         req.getSession().setAttribute("numberOfQuestions", questionCount);
+        System.out.println(quiz.getCreatorUserId());
         quizDAO.addQuiz(quiz);
         req.getRequestDispatcher("Questions.jsp").forward(req, resp);
 

@@ -19,7 +19,7 @@ public class NoteDAO {
 
     public void addNote (Note note) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("INSERT INTO notes (note_text, from_id, to_id, sent_time)" +
-                                                        "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setString(1, note.getNoteText());
         stm.setLong(2, note.getFromUserId());
         stm.setLong(3, note.getToUserId());
@@ -37,13 +37,13 @@ public class NoteDAO {
         ResultSet res = stm.executeQuery();
         res.next();
         return new Note(res.getLong("id"), res.getString("note_text"),
-                        res.getLong("from_id"), res.getLong("to_id"),
-                        res.getTimestamp("sent_time"));
+                res.getLong("from_id"), res.getLong("to_id"),
+                res.getTimestamp("sent_time"));
     }
 
     public List<Note> getChat (long user1, long user2) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("SELECT * FROM notes WHERE (from_id = ? AND to_id = ?)" +
-                                                        " OR (to_id = ? AND from_id = ?) ORDER BY sent_time");
+                " OR (to_id = ? AND from_id = ?) ORDER BY sent_time");
         stm.setLong(1, user1);
         stm.setLong(2, user2);
         stm.setLong(3, user1);

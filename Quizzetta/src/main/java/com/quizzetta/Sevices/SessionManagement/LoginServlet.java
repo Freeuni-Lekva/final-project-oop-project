@@ -38,11 +38,12 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         LogInValidator loginValidator = new LogInValidator(username, password, userDAO);
-        System.out.println("AXLA AQQQ :P");
+//        System.out.println("AXLA AQQQ :P");
 
         if (!loginValidator.validate()) {
             System.out.println("SHEMOSVLA");
             List<ValidationError> errors = loginValidator.getErrors();
+
             System.out.println("Validator passed");
 //            Gson gson = new Gson();
 //            resp.getWriter().print(gson.toJson(errors));

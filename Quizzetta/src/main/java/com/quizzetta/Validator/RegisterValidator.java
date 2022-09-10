@@ -16,6 +16,7 @@ import java.util.List;
 
 public class RegisterValidator implements Validator {
 
+    private final String email;
     private final String username;
     private final String firstName;
     private final String lastName;
@@ -25,13 +26,15 @@ public class RegisterValidator implements Validator {
 
     private List<ValidationError> errors;
 
-    public RegisterValidator(String username, String firstName, String lastName, String password, UserDAO userDAO) {
+    public RegisterValidator(String email, String username, String firstName, String lastName, String password, UserDAO userDAO) {
+        this.email = email;
         this.username = username;
 
         this.firstName = firstName;
         this.lastName = lastName;
 
         this.password = password;
+
 //        this.connection = dataBaseConn;
         this.userDAO = userDAO;
 
@@ -41,6 +44,7 @@ public class RegisterValidator implements Validator {
     private boolean isEntirelyFilled() {
         System.out.println("SHEMOSVLA FILLEDSHIIII");
         List<Pair<String, String>> pairs = Arrays.asList(
+                new Pair<>("email", email),
                 new Pair<>("username", username),
                 new Pair<>("firstName", firstName),
                 new Pair<>("lastName", lastName),

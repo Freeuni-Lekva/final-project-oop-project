@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Hasher {
-
+// TEMP
     public static String hexToString(byte[] bytes) {
         StringBuilder buff = new StringBuilder();
         for (int aByte : bytes) {

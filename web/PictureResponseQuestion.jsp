@@ -38,8 +38,8 @@
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                            <label for="imageURL" class="form-label">Picture URL </label>
-                                            <input id="imageURL" type="text" name="imageURL" class="form-control"/>
+                                                <label for="imageURL" class="form-label">Picture URL </label>
+                                                <input id="imageURL" type="text" name="imageURL" class="form-control"/>
                                             </div>
                                         </div>
 

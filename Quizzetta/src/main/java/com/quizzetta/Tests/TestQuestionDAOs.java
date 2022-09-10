@@ -1,5 +1,3 @@
-package com.quizzetta.Tests;
-
 import com.quizzetta.DAOs.StandardTextQuestionDAO;
 import com.quizzetta.Model.Answer;
 import com.quizzetta.Model.DatabaseConnector;
@@ -55,9 +53,9 @@ public class TestQuestionDAOs extends TestCase {
 
     public void setStandardUp() throws SQLException {
         standardTextQuestion1 = new Question("What was the name of the first President of Georgia?",
-                                             1, "", 1);
+                1, "", 1);
         standardTextQuestion2 = new Question("What is the name of the Capital of Georgia?",
-                                             1, "", 1);
+                1, "", 1);
         standardDao.addQuestion(standardTextQuestion1, 1);
         standardDao.addQuestion(standardTextQuestion2, 1);
         standardTextAnswer1 = new Answer("Zviad Gamsakhurdia", standardTextQuestion1.getId(), true);
@@ -72,9 +70,9 @@ public class TestQuestionDAOs extends TestCase {
 
     public void setFillTheBlankUp() throws SQLException {
         fillTheBlankQuestion1 = new Question("The famous statue of a woman in Tbilisi is called ______",
-                                             1, "", 1);
+                1, "", 1);
         fillTheBlankQuestion2 = new Question("20% of Georgia's territory is occupied by _____",
-                                             1, "", 1);
+                1, "", 1);
         fillTheBlankDao.addQuestion(fillTheBlankQuestion1, 1);
         fillTheBlankDao.addQuestion(fillTheBlankQuestion2, 1);
         fillTheBlankAnswer1 = new Answer("Qartlis Deda", fillTheBlankQuestion1.getId(), true);

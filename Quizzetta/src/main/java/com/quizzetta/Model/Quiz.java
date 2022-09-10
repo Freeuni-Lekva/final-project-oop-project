@@ -1,5 +1,8 @@
 package com.quizzetta.Model;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class Quiz {
@@ -12,6 +15,11 @@ public class Quiz {
     private boolean immediateFeedback;
     private boolean practiceMode;
     private List<Question> questions;
+    private int numberOfUses;
+
+    private Timestamp creationDate;
+
+    private int authorId;
 
 
     public Quiz(long id, String title, long creatorUserId, boolean randomQuestions, boolean onePage,
@@ -23,15 +31,20 @@ public class Quiz {
         this.onePage = onePage;
         this.immediateFeedback = immediateFeedback;
         this.practiceMode = practiceMode;
+        this.numberOfUses = 0;
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
-    public Quiz(String title, long creatorUserId, boolean randomQuestions, boolean onePage, boolean immediateFeedback, boolean practiceMode) {
+    public Quiz (String title, long creatorUserId, boolean randomQuestions, boolean onePage,
+                 boolean immediateFeedback, boolean practiceMode) {
         this.title = title;
         this.creatorUserId = creatorUserId;
         this.randomQuestions = randomQuestions;
         this.onePage = onePage;
         this.immediateFeedback = immediateFeedback;
         this.practiceMode = practiceMode;
+        this.numberOfUses = 0;
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
     public List<Question> getQuestions() {
@@ -97,4 +110,16 @@ public class Quiz {
     public void setPracticeMode(boolean practiceMode) {
         this.practiceMode = practiceMode;
     }
+
+    public int getNumberOfUses() {
+        return numberOfUses;
+    }
+
+    public void incrementNumberOfUses() { this.numberOfUses++; }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) { this.creationDate = creationDate; }
 }

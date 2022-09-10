@@ -58,7 +58,7 @@ public class RegisterServlet extends HttpServlet {
 
         // ERRORS
         List<ValidationError> errors = new ArrayList<>();
-        RegisterValidator regVal = new RegisterValidator(username, firstName, lastName, password, userDAO);
+        RegisterValidator regVal = new RegisterValidator(email, username, firstName, lastName, password, userDAO);
         System.out.println("SQLAMDE AR MISULI: ");
 
         // I'm saving all the errors for testing, but only passing the first one to the JSP.
@@ -81,7 +81,7 @@ public class RegisterServlet extends HttpServlet {
 
         // Add User to the Database.
         String passwordHash = Hasher.generateHash(password); // TODO LOGIC BEHIND THIS NEEDS TO BE REVIEWED
-        User user = new User(username, passwordHash, firstName, lastName, isAdmin);
+        User user = new User(email, username, passwordHash, firstName, lastName, isAdmin);
         userDAO.addUser(user);
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
