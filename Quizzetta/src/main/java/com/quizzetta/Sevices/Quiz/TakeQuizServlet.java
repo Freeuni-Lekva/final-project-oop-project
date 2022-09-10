@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,12 @@ public class TakeQuizServlet extends HttpServlet {
         QuizDAO quizDAO = (QuizDAO) req.getServletContext().getAttribute("QuizDAO");
         long quizId = (long) req.getSession().getAttribute("quizId");;
 
-        Quiz quiz = quizDAO.getQuiz(quizId);
+        Quiz quiz = null;
+        try {
+            quiz = quizDAO.getQuiz(quizId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         req.setAttribute("questionList", quiz.getQuestions());
 //        req.setAttribute("quizId", quizId);
 
@@ -47,7 +53,12 @@ public class TakeQuizServlet extends HttpServlet {
         long userId = (long) req.getSession().getAttribute("userId");
         long quizId = (long) req.getSession().getAttribute("quizId");
 
-        Quiz quiz = quizDAO.getQuiz(quizId);
+        Quiz quiz = null;
+        try {
+            quiz = quizDAO.getQuiz(quizId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         List<Question> questionsList = quiz.getQuestions();
         List<Pair<Question, Answer>> questionAnswer;
 
