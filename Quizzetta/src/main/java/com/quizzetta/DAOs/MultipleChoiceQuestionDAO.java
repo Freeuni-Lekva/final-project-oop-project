@@ -47,7 +47,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
         List<Answer> lst = new ArrayList<>();
         while (res.next()) {
             lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
-                    res.getLong("question_id"), res.getBoolean("is_correct")));
+                               res.getLong("question_id"), res.getBoolean("is_correct")));
         }
         return lst;
     }
@@ -85,7 +85,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
         ResultSet res = stm.executeQuery();
         res.next();
         return new Question (res.getLong("id"), res.getString("question_text"),
-                res.getLong("quiz_id"), "", res.getInt("num_of_answers"));
+                             res.getLong("quiz_id"), "", res.getInt("num_of_answers"));
 
     }
 
