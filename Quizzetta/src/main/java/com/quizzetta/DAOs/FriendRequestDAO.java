@@ -30,6 +30,7 @@ public class FriendRequestDAO {
             res.next();
             long requestId = res.getLong(1);
             request.setId(requestId);
+            stm.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -43,6 +44,7 @@ public class FriendRequestDAO {
             stm.setLong(1, requestId);
             ResultSet res = stm.executeQuery();
             res.next();
+            stm.close();
             return new FriendRequest(res.getLong("id"), res.getLong("from_id"),
                     res.getLong("to_id"));
         } catch (SQLException e) {
@@ -61,6 +63,7 @@ public class FriendRequestDAO {
             while (res.next()) {
                 allRequests.add(getFriendRequest(res.getLong("id")));
             }
+            stm.close();
             return allRequests;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -74,6 +77,7 @@ public class FriendRequestDAO {
             stm = myConn.prepareStatement("DELETE FROM friendRequests WHERE id = ?");
             stm.setLong(1, requestId);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

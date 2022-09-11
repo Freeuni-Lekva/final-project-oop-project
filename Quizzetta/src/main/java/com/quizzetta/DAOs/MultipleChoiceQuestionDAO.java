@@ -33,6 +33,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
                 res.next();
                 long answerId = res.getLong(1);
                 ans.setId(answerId);
+                stm.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,6 +74,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
             res.next();
             long questionId = res.getLong(1);
             question.setId(questionId);
+            stm.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,6 +86,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         res.next();
+        stm.close();
         return new Question (res.getLong("id"), res.getString("question_text"),
                 res.getLong("quiz_id"), "", res.getInt("num_of_answers"));
 
@@ -98,6 +101,7 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
         while (res.next()) {
             questionList.add(getQuestion(res.getLong("id")));
         }
+        stm.close();
         return questionList;
     }
 
@@ -106,5 +110,6 @@ public class MultipleChoiceQuestionDAO implements QuestionDAO, AnswerDAO {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM multipleChoiceQuestions WHERE id = ?");
         stm.setLong(1, questionId);
         stm.executeUpdate();
+        stm.close();
     }
 }

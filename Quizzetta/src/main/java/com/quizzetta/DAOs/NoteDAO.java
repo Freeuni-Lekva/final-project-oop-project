@@ -29,6 +29,7 @@ public class NoteDAO {
         res.next();
         long noteId = res.getLong(1);
         note.setId(noteId);
+        stm.close();
     }
 
     public Note getNote (long noteId) throws SQLException {
@@ -36,6 +37,7 @@ public class NoteDAO {
         stm.setLong(1, noteId);
         ResultSet res = stm.executeQuery();
         res.next();
+        stm.close();
         return new Note(res.getLong("id"), res.getString("note_text"),
                 res.getLong("from_id"), res.getLong("to_id"),
                 res.getTimestamp("sent_time"));
@@ -53,6 +55,7 @@ public class NoteDAO {
         while (res.next()) {
             chat.add(getNote(res.getLong("id")));
         }
+        stm.close();
         return chat;
     }
 
@@ -60,5 +63,6 @@ public class NoteDAO {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM notes WHERE id = ?");
         stm.setLong(1, noteId);
         stm.executeUpdate();
+        stm.close();
     }
 }

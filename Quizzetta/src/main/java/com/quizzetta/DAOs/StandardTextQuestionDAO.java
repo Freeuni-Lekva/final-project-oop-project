@@ -32,6 +32,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
             long answerId = res.getLong(1);
             ans.setId(answerId);
             ans.setIsCorrect(true);
+            stm.close();
         }
     }
 
@@ -48,6 +49,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
             long answerId = res.getLong(1);
             answer.setId(answerId);
             answer.setIsCorrect(true);
+            stm.close();
         } catch (SQLException e) {
             System.out.println("ADD ANSWERSHIA PROBLEMAA");
             e.printStackTrace();
@@ -65,6 +67,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
             lst.add(new Answer(res.getLong("id"), res.getString("answer_text"),
                     res.getLong("question_id"), true));
         }
+        stm.close();
         return lst;
     }
 
@@ -73,6 +76,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM standardTextAnswers WHERE id = ?");
         stm.setLong(1, answerId);
         stm.executeUpdate();
+        stm.close();
     }
 
     @Override
@@ -88,6 +92,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
             res.next();
             long questionId = res.getLong(1);
             question.setId(questionId);
+            stm.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +104,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
         stm.setLong(1, questionId);
         ResultSet res = stm.executeQuery();
         res.next();
+        stm.close();
         return new Question(res.getLong("id"), res.getString("question_text"),
                 res.getLong("quiz_id"), "", 1);
     }
@@ -112,6 +118,7 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
         while (res.next()) {
             questionList.add(getQuestion(res.getLong("id")));
         }
+        stm.close();
         return questionList;
     }
 
@@ -120,5 +127,6 @@ public class StandardTextQuestionDAO implements QuestionDAO, AnswerDAO {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM standardTextQuestions WHERE id = ?");
         stm.setLong(1, questionId);
         stm.executeUpdate();
+        stm.close();
     }
 }
