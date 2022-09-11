@@ -1,5 +1,6 @@
 package com.quizzetta.DAOs;
 
+import com.quizzetta.Model.Answer;
 import com.quizzetta.Model.Question;
 import com.quizzetta.Model.Quiz;
 
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuizDAO {
@@ -78,6 +80,39 @@ public class QuizDAO {
             res.addAll(picture.getAllQuestions(quizId));
             return res;
         } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    public HashMap<Question, List<Answer>> getQuizQuestionsWithAnswers(long quizId) throws SQLException {
+        try {
+            HashMap<Question, List<Answer>> res = new HashMap<>();
+            StandardTextQuestionDAO standard = new StandardTextQuestionDAO(myConn);
+            FillTheBlankQuestionDAO fillBlank = new FillTheBlankQuestionDAO(myConn);
+            MultipleChoiceQuestionDAO multiple = new MultipleChoiceQuestionDAO(myConn);
+            PictureResponseQuestionDAO picture = new PictureResponseQuestionDAO(myConn);
+            List<Question> standardQuestions = new ArrayList<>(standard.getAllQuestions(quizId));
+            List<Question> fillBlankQuestions = new ArrayList<>(fillBlank.getAllQuestions(quizId));
+            List<Question> multipleQuestions = new ArrayList<>(multiple.getAllQuestions(quizId));
+            List<Question> pictureQuestions = new ArrayList<>(picture.getAllQuestions(quizId));
+            for (Question standardQuestion : standardQuestions) {
+                res.put(standardQuestion, new ArrayList<>(standard.getAnswer(standardQuestion.getId())));
+            }
+            for (Question fillBlankQuestion : fillBlankQuestions) {
+                res.put(fillBlankQuestion, new ArrayList<>(fillBlank.getAnswer(fillBlankQuestion.getId())));
+            }
+            for (Question multipleQuestion : multipleQuestions) {
+                res.put(multipleQuestion, new ArrayList<>(multiple.getAnswer(multipleQuestion.getId())));
+            }
+            for (Question pictureQuestion : pictureQuestions) {
+                res.put(pictureQuestion, new ArrayList<>(picture.getAnswer(pictureQuestion.getId())));
+            }
+//            for(Question question : res.keySet()) {
+//                System.out.println(question.getText() + " " + res.get(question).get(0));
+//            }
+            return res;
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }

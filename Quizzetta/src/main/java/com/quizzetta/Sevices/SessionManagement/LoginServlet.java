@@ -1,5 +1,6 @@
 package com.quizzetta.Sevices.SessionManagement;
 
+import com.quizzetta.DAOs.QuizDAO;
 import com.quizzetta.DAOs.UserDAO;
 import com.quizzetta.Errors.ValidationError;
 import com.quizzetta.Model.User;
@@ -61,6 +62,12 @@ public class LoginServlet extends HttpServlet {
 
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
+//        QuizDAO quizDAO = (QuizDAO) req.getServletContext().getAttribute("QuizDAO");
+//        try {
+//            System.out.println(quizDAO.getQuizQuestionsWithAnswers(3));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         resp.sendRedirect("HomepageLoggedIn.jsp");
 //        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
 
