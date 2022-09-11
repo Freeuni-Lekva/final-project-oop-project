@@ -28,14 +28,15 @@ public class TakeQuizServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        QuizDAO quizDAO = (QuizDAO) req.getSession().getAttribute("QuizDAO");
-        long quizId = (long) req.getSession().getAttribute("quizId");
+        QuizDAO quizDAO = (QuizDAO) req.getServletContext().getAttribute("QuizDAO");
+        long quizId = Long.parseLong(req.getParameter("quizId"));
         try {
-            req.getSession().setAttribute("questionsWithAnswers", quizDAO.getQuizQuestionsWithAnswers(quizId));
+            req.setAttribute("questionsWithAnswers", quizDAO.getQuizQuestionsWithAnswers(quizId));
+            req.getRequestDispatcher("Quiz.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        req.getRequestDispatcher("Quiz.jsp").forward(req, resp);
+
 
 //        score += questionsList.get(i).getS
     }

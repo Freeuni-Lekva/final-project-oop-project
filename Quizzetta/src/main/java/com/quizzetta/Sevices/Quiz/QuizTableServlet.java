@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@WebServlet("") TODO
+//@WebServlet("QuizTableServlet")
 public class  QuizTableServlet extends HttpServlet {
 
     private static final int NUM_OF_QUIZZES_IN_CATEGORY = 5;
@@ -42,7 +42,15 @@ public class  QuizTableServlet extends HttpServlet {
         List<Quiz> recentQuizzes = getRecentlyCreatedQuizzes(quizDAO);
         List<Quiz> usersRecentQuizzes = getUsersRecentQuizzes(quizDAO, userId);
         List<Quiz> recentQuizzesTakenByUser = getRecentlyTakenQuizzes(quizDAO, userDAO, userId);
-
+        req.setAttribute("popularQuizzes", popularQuizzes);
+        req.setAttribute("recentQuizzes", recentQuizzes);
+        req.setAttribute("userRecentQuizzes", usersRecentQuizzes);
+        req.setAttribute("recentQuizzesTakenByUser", recentQuizzesTakenByUser);
+        if(req.getSession().getAttribute("userId") != null) {
+            req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("Homepage.jsp").forward(req, resp);
+        }
     }
 
     private List<Quiz> getPopularQuizzes(QuizDAO quizDao) {

@@ -36,6 +36,7 @@
     <link href="headers.css" rel="stylesheet">
 </head>
 <body>
+<form action="QuizTableServlet" method="get">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
