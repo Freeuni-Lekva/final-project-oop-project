@@ -37,6 +37,7 @@ public class UserDAO {
             long userId = res.getLong(1);
             user.setId(userId);
             System.out.println("NOT SQL EXCEPTION");
+            stm.close();
         } catch (SQLException e) {
             System.out.println("SQL EXCEPTION");
             e.printStackTrace();
@@ -50,6 +51,7 @@ public class UserDAO {
         stm.setLong(1, userId);
         ResultSet res = stm.executeQuery();
         res.next();
+        stm.close();
         return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"), res.getString("url"));
@@ -60,6 +62,7 @@ public class UserDAO {
         stm.setString(1, userName);
         ResultSet res = stm.executeQuery();
         res.next();
+        stm.close();
         return new User(res.getLong("id"), res.getString("email"), res.getString("username"),
                 res.getString("password_hash"), res.getString("first_name"),
                 res.getString("last_name"), res.getBoolean("is_admin"), res.getString("url"));
@@ -69,6 +72,7 @@ public class UserDAO {
         PreparedStatement stm = myConn.prepareStatement("DELETE FROM userTable WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();
+        stm.close();
     }
 
     public void addFriend(long firstUserId, long secondUserId) throws SQLException {
@@ -81,6 +85,7 @@ public class UserDAO {
         stm.setLong(1, firstUserId);
         stm.setLong(2, secondUserId);
         stm.executeUpdate();
+        stm.close();
     }
 
     public List<User> getFriends(long userId) throws SQLException {
@@ -118,6 +123,7 @@ public class UserDAO {
         stm.setTimestamp(4, quiz.getStartTime());
         stm.setTimestamp(5, quiz.getEndTime());
         stm.executeUpdate();
+        stm.close();
     }
 
     public List<TakenQuiz> getQuizHistory(long userId) {
@@ -134,6 +140,7 @@ public class UserDAO {
                         res.getTimestamp("quiz_end_time"));
                 takenQuizzes.add(currQuiz);
             }
+            stm.close();
             return takenQuizzes;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,6 +161,7 @@ public class UserDAO {
                         res.getTimestamp("quiz_end_time"));
                 takenQuizzes.add(currQuiz);
             }
+            stm.close();
             return takenQuizzes;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -165,11 +173,13 @@ public class UserDAO {
         PreparedStatement stm = myConn.prepareStatement("UPDATE userTable SET is_admin = TRUE WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();
+        stm.close();
     }
 
     public void deleteAdmin(long userId) throws SQLException {
         PreparedStatement stm = myConn.prepareStatement("UPDATE userTable SET is_admin = FALSE WHERE id = ?");
         stm.setLong(1, userId);
         stm.executeUpdate();
+        stm.close();
     }
 }

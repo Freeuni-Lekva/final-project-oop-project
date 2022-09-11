@@ -38,6 +38,7 @@ public class QuizDAO {
             res.next();
             long quizId = res.getLong(1);
             quiz.setId(quizId);
+            stm.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,6 +51,7 @@ public class QuizDAO {
             stm.setLong(1, quizId);
             ResultSet res = stm.executeQuery();
             res.next();
+            stm.close();
             return new Quiz(res.getLong("id"), res.getString("title"),
                     res.getLong("creator_id"), res.getBoolean("are_random_questions"),
                     res.getBoolean("is_one_page"), res.getBoolean("is_immediate_feedback"),
@@ -92,6 +94,7 @@ public class QuizDAO {
             while (res.next()) {
                 createdQuizzes.add(getQuiz(res.getLong("id")));
             }
+            stm.close();
             return createdQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -107,6 +110,7 @@ public class QuizDAO {
             while (res.next()) {
                 recentlyCreatedQuizzes.add(getQuiz(res.getLong("id")));
             }
+            stm.close();
             return recentlyCreatedQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -121,6 +125,7 @@ public class QuizDAO {
             while (res.next()) {
                 recentlyCreatedQuizzes.add(getQuiz(res.getLong("id")));
             }
+            stm.close();
             return recentlyCreatedQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -135,6 +140,7 @@ public class QuizDAO {
             while (res.next()) {
                 mostPopularQuizzes.add(getQuiz(res.getLong("id")));
             }
+            stm.close();
             return mostPopularQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -149,6 +155,7 @@ public class QuizDAO {
             while (res.next()) {
                 allQuizzes.add(getQuiz(res.getLong("id")));
             }
+            stm.close();
             return allQuizzes;
         } catch (SQLException e) {
             throw new RuntimeException();
