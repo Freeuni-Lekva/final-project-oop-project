@@ -30,9 +30,9 @@ public class LogInValidator implements Validator {
     @Override
     public boolean validate() {
 
-        if (userName == null) { // TODO SHOULD WE PRINT ALL MISSING INFO, OR JUST THE FIRST ONE
+        if (userName == null || userName.isEmpty()) { // TODO SHOULD WE PRINT ALL MISSING INFO, OR JUST THE FIRST ONE
             errors.add(new ValidationError("Username Field has to be not empty"));
-        } else if (password == null) {
+        } else if (password == null || password.isEmpty()) {
             errors.add(new ValidationError("Password Field has to be not empty"));
         }
 

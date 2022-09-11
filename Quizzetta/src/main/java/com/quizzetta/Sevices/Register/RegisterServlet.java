@@ -85,6 +85,10 @@ public class RegisterServlet extends HttpServlet {
         userDAO.addUser(user);
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
+        req.getSession().setAttribute("userEmail", user.getEmail());
+        req.getSession().setAttribute("userFirstName", user.getFirstName());
+        req.getSession().setAttribute("userLastName", user.getLastName());
+        req.getSession().setAttribute("userFriends", user.getFriends());
 
         req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
 

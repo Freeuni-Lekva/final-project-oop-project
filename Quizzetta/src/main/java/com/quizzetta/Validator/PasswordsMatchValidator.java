@@ -38,7 +38,7 @@ public class PasswordsMatchValidator implements Validator {
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
-            errors.add(new ValidationError("The Username is not in found"));
+            errors.add(new ValidationError("The Username is not found"));
             return false;
         }
     }
