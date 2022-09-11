@@ -82,7 +82,6 @@
                                                 <label class="form-check-label" for="multiplePageButton"> Multiple
                                                     Pages </label>
                                             </div>
-                                            <%--                                            </div>--%>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">

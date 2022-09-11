@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <!-- Brand -->
             <div>
-                <a class="h4 mb-0 mr-2 text-white text-uppercase d-none d-lg-inline-block" href=Homepage.jsp
+                <a class="h4 mb-0 mr-2 text-white text-uppercase d-none d-lg-inline-block" href=HomepageLoggedIn.jsp
                    target="_blank">Homepage</a>
                 <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href=ProfilePage.jsp
                    target="_blank">User profile</a>
@@ -22,10 +22,10 @@
                         <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
                   <img alt="Img"
-                       src='<c:out value="${imageUrl}"> </c:out>'>
+                       src='<c:out value="${userImageUrl}"> </c:out>'>
                 </span>
                             <div class="media-body ml-2 d-none d-lg-block">
-                                <span class="mb-0 text-sm  font-weight-bold">Vazha Mamatsashvili</span>
+                                <span class="mb-0 text-sm  font-weight-bold"><c:out value="${userFirstName} ${userLastName}"></c:out></span>
                             </div>
                         </div>
                     </a>
@@ -44,9 +44,6 @@
             <div class="row">
                 <div class="col-lg-7 col-md-10">
                     <h1 class="display-2 text-white">Hello <c:out value="${username}"> </c:out></h1>
-                    <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with
-                        your work and manage your projects or assigned tasks</p>
-                    <a href="#!" class="btn btn-info">Edit profile</a>
                 </div>
             </div>
         </div>
@@ -60,7 +57,7 @@
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
                                 <a href="#">
-                                    <img src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-4.jpg"
+                                    <img src='<c:out value="${userImageUrl}"> </c:out>'
                                          class="rounded-circle">
                                 </a>
                             </div>
@@ -72,7 +69,7 @@
                             <div class="col">
                                 <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                     <div>
-                                        <span class="heading">22</span>
+                                        <span class="heading">0</span>
                                         <a class="description"
                                            href="https://www.creative-tim.com/product/argon-dashboard">Friends</a>
                                     </div>
@@ -108,6 +105,7 @@
                                             <input type="text" id="input-username" name="username"
                                                    class="form-control form-control-alternative" readonly
                                                    placeholder="Username" value='<c:out value="${username}"> </c:out>'>
+                                           Hehehe:  <c:out value="${userImageUrl}"> </c:out>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">

@@ -104,7 +104,7 @@
                 <div class="dropdown text-end">
                     <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<%="userImage"%>" width="32" height="32" class="rounded-circle">
+                        <img src='<c:out value="${userImageUrl}"> https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png </c:out>' width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                         <li><a class="dropdown-item" href="ProfilePage.jsp">Profile Page</a></li>
