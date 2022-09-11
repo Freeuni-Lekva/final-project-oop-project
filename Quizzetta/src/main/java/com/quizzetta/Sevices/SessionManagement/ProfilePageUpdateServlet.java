@@ -18,12 +18,21 @@ import java.util.List;
 public class ProfilePageUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        if (req.getSession().getAttribute("userId") == null) {
+            req.getRequestDispatcher("CantAccessPage.jsp").forward(req, resp);
+            return;
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
+
         long id = (long) req.getSession().getAttribute("userId");
+
+
+        System.out.println("ID: " + id);
 
 //        String username = req.getParameter("username");
         String firstName = req.getParameter("firstName");
@@ -61,6 +70,7 @@ public class ProfilePageUpdateServlet extends HttpServlet {
 
         userDAO.addUser(user);
 
+        req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("userFirstName", firstName);
         req.getSession().setAttribute("userLastName", lastName);
         req.getSession().setAttribute("userEmail", email);

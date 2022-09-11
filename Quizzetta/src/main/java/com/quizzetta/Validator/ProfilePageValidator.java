@@ -39,7 +39,10 @@ public class ProfilePageValidator implements Validator {
             return true; // user can skip url input
         } else if (!isValidURL(url)) {
             errors.add(new ValidationError("The url is invalid!"));
-        } else {
+        } else if (!(url.endsWith("jpeg") || url.endsWith("jpg") || url.endsWith("png") || url.endsWith("gif"))) {
+            errors.add(new ValidationError("The given url does not represent an image."));
+        }
+        else {
             return true;
         }
 

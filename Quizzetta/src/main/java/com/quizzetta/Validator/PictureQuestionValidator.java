@@ -35,6 +35,9 @@ public class PictureQuestionValidator implements Validator {
         else if (question == null || question.isEmpty()) {
             errors.add(new ValidationError(("The Question can't be empty!")));
         }
+        else if (!(url.endsWith("jpeg") || url.endsWith("jpg") || url.endsWith("png") || url.endsWith("gif"))) {
+            errors.add(new ValidationError("The given url does not represent an image."));
+        }
         else {
             return true;
         }

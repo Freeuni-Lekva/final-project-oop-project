@@ -25,5 +25,9 @@ public class LogOutServlet extends HttpServlet {
     private void removeCurrentSession(HttpServletRequest request) {
         request.getSession().setAttribute("userId", null);
         request.getSession().setAttribute("username", null);
+        request.getSession().setAttribute("userFirstName", null);
+        request.getSession().setAttribute("userLastName", null);
+        request.getSession().setAttribute("userEmail", null);
+        request.getSession().setAttribute("userImageUrl", null);
     }
 }
