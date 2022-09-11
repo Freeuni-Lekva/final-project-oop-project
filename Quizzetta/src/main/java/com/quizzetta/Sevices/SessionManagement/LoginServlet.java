@@ -31,22 +31,14 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("AQ VART");
         UserDAO userDAO = (UserDAO) req.getServletContext().getAttribute("UserDAO");
-        System.out.println(userDAO);
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
         LogInValidator loginValidator = new LogInValidator(username, password, userDAO);
-//        System.out.println("AXLA AQQQ :P");
 
         if (!loginValidator.validate()) {
-            System.out.println("SHEMOSVLA");
             List<ValidationError> errors = loginValidator.getErrors();
-
-            System.out.println("Validator passed");
-//            Gson gson = new Gson();
-//            resp.getWriter().print(gson.toJson(errors));
             req.setAttribute("ErrorMessage", errors.get(0).getErrorMessage());
             req.getRequestDispatcher("Login.jsp").forward(req, resp);
             return;
@@ -59,26 +51,26 @@ public class LoginServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        System.out.println("AQAMDE MOVAGWIET 1");
+
         req.getSession().setAttribute("userId", user.getId());
         req.getSession().setAttribute("username", user.getUsername());
+
+        System.out.println("AQAMDE MOVAGWIET 2");
+
+
+        // Adding these for Profile page, could move these to a different servlet instead.
+        req.getSession().setAttribute("userEmail", user.getEmail());
+        req.getSession().setAttribute("userFirstName", user.getFirstName());
+        req.getSession().setAttribute("userLastName", user.getLastName());
+        req.getSession().setAttribute("userFriends", user.getFriends());
+
         resp.sendRedirect("HomepageLoggedIn.jsp");
-//        req.getRequestDispatcher("HomepageLoggedIn.jsp").forward(req, resp);
-
-
-//        try { // User exists in database
-//            User user = userDAO.getUser(username);
-//            req.getSession().setAttribute("currentUserId", user.getId()); // TODO
-//            req.getSession().setAttribute("currentUserName", user.getUsername()); // TODO
-//        } catch (SQLException e) { // User doesn't exist in database
-//            e.printStackTrace();
-//        }
-
-
     }
 
     private boolean isLoggedIn(HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("userId"); // TODO
-        String userName = (String) request.getSession().getAttribute("username"); // TODO
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        String userName = (String) request.getSession().getAttribute("username");
 
         return userId != null && userName != null;
     }

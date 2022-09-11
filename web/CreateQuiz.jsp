@@ -21,7 +21,8 @@
 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create Quiz</p>
 
-                                    <h6 class="registration-error h6 mb-3 mx-1 mx-md-4 mt-2" style="color:darkred"><c:out value="${QuizErrorMessage}"/></h6>
+                                    <h6 class="registration-error h6 mb-3 mx-1 mx-md-4 mt-2" style="color:darkred">
+                                        <c:out value="${QuizErrorMessage}"/></h6>
 
 
                                     <form class="mx-1 mx-md-4">
@@ -102,7 +103,7 @@
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label"> How many questions should the quiz to
+                                                <label class="form-label"> How many questions should the quiz
                                                     have?</label>
                                                 <input id="numberOfQuestions" type="text" name="numberOfQuestions"
                                                        class="form-control"/>
